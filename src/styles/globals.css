@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-dizimus-50:  #f3f0ff;
+  --color-dizimus-100: #e8e2ff;
+  --color-dizimus-200: #d1c6ff;
+  --color-dizimus-300: #b09aff;
+  --color-dizimus-400: #8b63ff;
+  --color-dizimus-500: #673de6;
+  --color-dizimus-600: #5230c4;
+  --color-dizimus-700: #3d2096;
+  --color-dizimus-800: #271460;
+  --color-dizimus-900: #160b3c;
+  --color-dizimus-950: #0c0620;
+
+  --color-gold-400: #f5c842;
+  --color-gold-500: #e0a020;
+  --color-gold-600: #c88a10;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #0c0620;
+  color: #f0eeff;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+::selection {
+  background: rgba(103, 61, 230, 0.35);
+  color: white;
+}

@@ -28,7 +28,7 @@ src/
 ├── pages/
 │   ├── Home.jsx
 │   ├── About.jsx
-│   ├── Pricing.jsx
+│   ├── Prcing.jsx
 │   └── Contact.jsx
 │
 ├── routes/
@@ -41,4 +41,4 @@ src/
 │
 └── styles/
 
-```# dizimus-front
+```# dizimus-fronit

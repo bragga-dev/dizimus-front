@@ -1,0 +1,74 @@
+/* GLASS EFFECT */
+
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+
+  backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* CONTAINER */
+
+.container-default {
+  width: 100%;
+  max-width: 1280px;
+
+  margin-inline: auto;
+
+  padding-inline: 24px;
+}
+
+/* SECTION */
+
+.section-spacing {
+  padding-block: 120px;
+}
+
+/* TITLE */
+
+.title-gradient {
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    #b7a8ff 100%
+  );
+
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
+/* CARD */
+
+.card-default {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: rgba(255, 255, 255, 0.03);
+
+  backdrop-filter: blur(12px);
+
+  border-radius: 32px;
+
+  box-shadow: var(--shadow-card);
+}
+
+/* BUTTON */
+
+.button-primary {
+  background: var(--gradient-primary);
+
+  color: white;
+
+  border-radius: 18px;
+
+  font-weight: 700;
+
+  transition: all 0.3s ease;
+}
+
+.button-primary:hover {
+  transform: translateY(-2px);
+
+  box-shadow: var(--shadow-glow);
+}

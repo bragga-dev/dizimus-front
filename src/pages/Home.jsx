@@ -1,10 +1,10 @@
-import Hero from '../components/home/Hero'
-import SocialProof from '../components/home/SocialProof'
-import FeaturesSection from '../components/home/FeaturesSection'
-import WhySection from '../components/home/WhySection'
-import Testimonials from '../components/home/Testimonials'
-import Pricing from '../components/home/Pricing'
-import CTASection from '../components/home/CTASection'
+import Hero from '../components/sections/home/Hero'
+import SocialProof from '../components/sections/home/SocialProof'
+import FeaturesSection from '../components/sections/home/FeaturesSection'
+import WhySection from '../components/sections/home/WhySection'
+import Testimonials from '../components/sections/home/Testimonials'
+import Pricing from '../components/sections/home/Pricing'
+import CTASection from '../components/sections/home/CTASection'
 
 export default function Home() {
   return (

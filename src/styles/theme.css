@@ -1,0 +1,32 @@
+:root {
+  --background: #0c0620;
+  --surface: #160b3c;
+  --surface-light: #1e1050;
+
+  --purple-950: #0c0620;
+  --purple-900: #160b3c;
+  --purple-800: #271460;
+  --purple-700: #3d2096;
+  --purple-600: #5230c4;
+  --purple-500: #673de6;
+  --purple-400: #8b63ff;
+  --purple-300: #b09aff;
+
+  --gold: #e0a020;
+
+  --white: #f0eeff;
+  --text-light: #c8c0e8;
+  --text-muted: #7b7498;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(255, 255, 255, 0.12);
+
+  --shadow-glow: 0 0 60px rgba(103, 61, 230, 0.4);
+  --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.3);
+
+  --gradient-primary: linear-gradient(135deg, #673de6 0%, #3d2096 100%);
+  --gradient-dark: linear-gradient(135deg, #160b3c 0%, #271460 100%);
+  --gradient-hero: radial-gradient(ellipse at 60% 0%, rgba(103,61,230,0.35) 0%, transparent 60%),
+                   radial-gradient(ellipse at 10% 80%, rgba(61,32,150,0.25) 0%, transparent 50%),
+                   #0c0620;
+}
