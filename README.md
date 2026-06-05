@@ -41,4 +41,4 @@ src/
 │
 └── styles/
 
-```# dizimus-fronit
+```# ecclesia-fronit

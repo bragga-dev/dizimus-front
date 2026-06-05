@@ -39,10 +39,10 @@ export default function Pricing() {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left text */}
           <div>
-            <span className="text-xs font-bold text-dizimus-500 uppercase tracking-widest">Planos que cabem na sua igreja</span>
-            <h2 className="text-3xl lg:text-4xl font-extrabold text-dizimus-900 mt-3 leading-tight">
+            <span className="text-xs font-bold text-ecclesia-500 uppercase tracking-widest">Planos que cabem na sua igreja</span>
+            <h2 className="text-3xl lg:text-4xl font-extrabold text-ecclesia-900 mt-3 leading-tight">
               Escolha o plano ideal para{' '}
-              <span className="text-dizimus-500">sua realidade.</span>
+              <span className="text-ecclesia-500">sua realidade.</span>
             </h2>
           </div>
 
@@ -53,21 +53,21 @@ export default function Pricing() {
                 key={name}
                 className={`relative rounded-2xl p-5 flex flex-col ${
                   featured
-                    ? 'bg-dizimus-700 text-white shadow-2xl shadow-dizimus-700/30 scale-105'
+                    ? 'bg-ecclesia-700 text-white shadow-2xl shadow-ecclesia-700/30 scale-105'
                     : 'bg-white border border-gray-100 shadow-sm'
                 }`}
               >
                 {badge && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold-500 text-dizimus-900 text-[10px] font-bold px-3 py-0.5 rounded-full whitespace-nowrap">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold-500 text-ecclesia-900 text-[10px] font-bold px-3 py-0.5 rounded-full whitespace-nowrap">
                     {badge}
                   </span>
                 )}
                 <div className="mb-4">
                   <p className={`text-xs font-bold uppercase tracking-wide mb-0.5 ${featured ? 'text-white/60' : 'text-gray-400'}`}>{sub}</p>
-                  <p className={`text-lg font-extrabold ${featured ? 'text-white' : 'text-dizimus-900'}`}>{name}</p>
+                  <p className={`text-lg font-extrabold ${featured ? 'text-white' : 'text-ecclesia-900'}`}>{name}</p>
                 </div>
                 <div className="mb-5">
-                  <span className={`text-3xl font-extrabold ${featured ? 'text-white' : 'text-dizimus-900'}`}>
+                  <span className={`text-3xl font-extrabold ${featured ? 'text-white' : 'text-ecclesia-900'}`}>
                     R$ {price}
                   </span>
                   <span className={`text-xs ${featured ? 'text-white/60' : 'text-gray-400'}`}>/mês</span>
@@ -87,8 +87,8 @@ export default function Pricing() {
                   href="#"
                   className={`w-full text-center text-sm font-bold py-2.5 rounded-lg transition-all active:scale-95 ${
                     featured
-                      ? 'bg-white text-dizimus-700 hover:bg-dizimus-50'
-                      : 'border-2 border-dizimus-200 text-dizimus-700 hover:border-dizimus-500 hover:bg-dizimus-50'
+                      ? 'bg-white text-ecclesia-700 hover:bg-ecclesia-50'
+                      : 'border-2 border-ecclesia-200 text-ecclesia-700 hover:border-ecclesia-500 hover:bg-ecclesia-50'
                   }`}
                 >
                   Começar agora

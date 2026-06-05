@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react'
 
 export default function CTASection() {
   return (
-    <section className="bg-dizimus-800 py-20 px-6 relative overflow-hidden">
+    <section className="bg-ecclesia-800 py-20 px-6 relative overflow-hidden">
       {/* Church illustration */}
       <div className="absolute left-0 top-0 bottom-0 flex items-center pl-10 pointer-events-none">
         <svg viewBox="0 0 200 220" fill="none" className="w-48 h-auto opacity-20">
@@ -25,12 +25,12 @@ export default function CTASection() {
               Pronto para transformar a gestão da sua igreja?
             </h2>
             <p className="text-white/60 text-sm leading-relaxed">
-              Agende uma demonstração gratuita e veja como o Dizimus pode ajudar sua igreja a crescer com propósito e excelência.
+              Agende uma demonstração gratuita e veja como o Ecclesia pode ajudar sua igreja a crescer com propósito e excelência.
             </p>
           </div>
           <a
             href="#"
-            className="shrink-0 inline-flex items-center gap-2 bg-white text-dizimus-800 hover:bg-dizimus-50 font-bold px-8 py-4 rounded-xl transition-all hover:shadow-xl active:scale-95 text-sm"
+            className="shrink-0 inline-flex items-center gap-2 bg-white text-ecclesia-800 hover:bg-ecclesia-50 font-bold px-8 py-4 rounded-xl transition-all hover:shadow-xl active:scale-95 text-sm"
           >
             Agendar demonstração
             <ArrowRight size={16} />

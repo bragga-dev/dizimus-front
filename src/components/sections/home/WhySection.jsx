@@ -30,14 +30,14 @@ export default function WhySection() {
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Text */}
           <div className="lg:sticky lg:top-24">
-            <span className="text-xs font-bold text-dizimus-500 uppercase tracking-widest">Por que usar o Dizimus</span>
-            <h2 className="text-3xl lg:text-4xl font-extrabold text-dizimus-900 mt-3 mb-5 leading-tight">
+            <span className="text-xs font-bold text-ecclesia-500 uppercase tracking-widest">Por que usar o ecclesia</span>
+            <h2 className="text-3xl lg:text-4xl font-extrabold text-ecclesia-900 mt-3 mb-5 leading-tight">
               Mais tempo para o Reino.{' '}
-              <span className="text-dizimus-500">Menos tempo</span>{' '}
+              <span className="text-ecclesia-500">Menos tempo</span>{' '}
               com burocracia.
             </h2>
             <p className="text-gray-500 leading-relaxed">
-              O Dizimus foi criado para pastores, líderes e equipes que desejam eficiência sem abrir mão da missão.
+              O ecclesia foi criado para pastores, líderes e equipes que desejam eficiência sem abrir mão da missão.
             </p>
           </div>
 
@@ -45,10 +45,10 @@ export default function WhySection() {
           <div className="grid sm:grid-cols-2 gap-6">
             {pillars.map(({ icon: Icon, title, desc }) => (
               <div key={title} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all">
-                <div className="w-12 h-12 bg-dizimus-100 rounded-xl flex items-center justify-center mb-4">
-                  <Icon size={22} className="text-dizimus-600" />
+                <div className="w-12 h-12 bg-ecclesia-100 rounded-xl flex items-center justify-center mb-4">
+                  <Icon size={22} className="text-ecclesia-600" />
                 </div>
-                <h3 className="text-dizimus-900 font-bold mb-2">{title}</h3>
+                <h3 className="text-ecclesia-900 font-bold mb-2">{title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}

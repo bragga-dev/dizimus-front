@@ -1,35 +1,25 @@
-// LogoIcon.jsx - Versão simples e limpa
+// LogoIcon.jsx — Catedral dourada (baseado no SVG que você enviou)
+
 export default function LogoIcon() {
   return (
-    <svg
-      width="40"
-      height="40"
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Círculo */}
-      <circle
-        cx="32"
-        cy="32"
-        r="28"
-        stroke="#E0B14A"
-        strokeWidth="3"
+    <div className="w-[42px] h-[42px] flex items-center justify-center">
+      <img
+        src="/notre-dame-paris-svgrepo-com.svg"
+        alt="Ecclesia Logo"
+        className="
+          w-full
+          h-full
+          object-contain
+          brightness-0
+          sepia
+          saturate-[400%]
+          hue-rotate-[10deg]
+        "
+        style={{
+          filter:
+            "brightness(0) saturate(100%) invert(75%) sepia(44%) saturate(787%) hue-rotate(356deg) brightness(98%) contrast(91%)",
+        }}
       />
-      
-      {/* Cruz */}
-      <path
-        d="M32 16V48"
-        stroke="#E0B14A"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      <path
-        d="M20 30H44"
-        stroke="#E0B14A"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-    </svg>
+    </div>
   );
 }

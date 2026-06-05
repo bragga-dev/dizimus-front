@@ -1,7 +1,7 @@
 const testimonials = [
   {
     stars: 5,
-    text: 'O Dizimus trouxe organização e transparência para nossa igreja. Hoje temos relatórios claros e mais tempo para cuidar de pessoas.',
+    text: 'O ecclesia trouxe organização e transparência para nossa igreja. Hoje temos relatórios claros e mais tempo para cuidar de pessoas.',
     name: 'Pr. Marcos Almeida',
     church: 'Igreja Nova Aliança',
     initials: 'MA',
@@ -47,10 +47,10 @@ export default function Testimonials() {
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           {/* Left */}
           <div>
-            <span className="text-xs font-bold text-dizimus-500 uppercase tracking-widest">O que dizem nossos clientes</span>
-            <h2 className="text-3xl lg:text-4xl font-extrabold text-dizimus-900 mt-3 mb-8 leading-tight">
+            <span className="text-xs font-bold text-ecclesia-500 uppercase tracking-widest">O que dizem nossos clientes</span>
+            <h2 className="text-3xl lg:text-4xl font-extrabold text-ecclesia-900 mt-3 mb-8 leading-tight">
               Histórias de igrejas que foram{' '}
-              <span className="text-dizimus-500">transformadas.</span>
+              <span className="text-ecclesia-500">transformadas.</span>
             </h2>
 
             {/* Trust badges */}
@@ -59,7 +59,7 @@ export default function Testimonials() {
                 <div key={label} className="flex items-center gap-2">
                   <span className="text-xl">{icon}</span>
                   <div>
-                    <p className="text-xs font-bold text-dizimus-900">{label}</p>
+                    <p className="text-xs font-bold text-ecclesia-900">{label}</p>
                     <p className="text-xs text-gray-400">{sub}</p>
                   </div>
                 </div>
@@ -74,11 +74,11 @@ export default function Testimonials() {
                 <Stars count={stars} />
                 <p className="text-gray-600 text-sm leading-relaxed mb-4 italic">"{text}"</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-dizimus-200 flex items-center justify-center text-xs font-bold text-dizimus-700 shrink-0">
+                  <div className="w-9 h-9 rounded-full bg-ecclesia-200 flex items-center justify-center text-xs font-bold text-ecclesia-700 shrink-0">
                     {initials}
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-dizimus-900">{name}</p>
+                    <p className="text-sm font-bold text-ecclesia-900">{name}</p>
                     <p className="text-xs text-gray-400">{church}</p>
                   </div>
                 </div>

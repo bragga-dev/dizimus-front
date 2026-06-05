@@ -8,6 +8,7 @@ import './styles/theme.css'
 import './styles/animations.css'
 import './styles/utilities.css'
 import './styles/scrollbar.css'
+import './styles/fonts.css'
 
 
 

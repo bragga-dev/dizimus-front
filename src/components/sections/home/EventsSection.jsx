@@ -43,10 +43,10 @@ export default function EventsSection() {
 
           {/* Text side */}
           <div>
-            <span className="text-xs font-semibold text-dizimus-500 uppercase tracking-widest">Eventos</span>
-            <h2 className="text-3xl lg:text-4xl font-extrabold text-dizimus-900 mt-3 mb-5 leading-tight">
+            <span className="text-xs font-semibold text-ecclesia-500 uppercase tracking-widest">Eventos</span>
+            <h2 className="text-3xl lg:text-4xl font-extrabold text-ecclesia-900 mt-3 mb-5 leading-tight">
               Momentos especiais,{' '}
-              <span className="text-dizimus-500">lembranças eternas.</span>
+              <span className="text-ecclesia-500">lembranças eternas.</span>
             </h2>
             <p className="text-gray-500 leading-relaxed mb-8">
               Organize batizados, casamentos, festas e viagens com facilidade e praticidade. Todos os momentos
@@ -54,8 +54,8 @@ export default function EventsSection() {
             </p>
 
             {/* Upcoming events mini list */}
-            <div className="bg-dizimus-50 rounded-2xl p-5 mb-8">
-              <p className="text-xs font-bold text-dizimus-900 mb-3 uppercase tracking-wide">Próximos eventos</p>
+            <div className="bg-ecclesia-50 rounded-2xl p-5 mb-8">
+              <p className="text-xs font-bold text-ecclesia-900 mb-3 uppercase tracking-wide">Próximos eventos</p>
               <div className="space-y-3">
                 {[
                   { event: 'Batizado de Novos Membros', date: '24 Mai', type: '💧', color: 'bg-blue-100' },
@@ -67,9 +67,9 @@ export default function EventsSection() {
                       {type}
                     </div>
                     <div className="flex-1">
-                      <p className="text-xs font-semibold text-dizimus-900">{event}</p>
+                      <p className="text-xs font-semibold text-ecclesia-900">{event}</p>
                     </div>
-                    <span className="text-xs text-dizimus-500 font-medium whitespace-nowrap">{date}</span>
+                    <span className="text-xs text-ecclesia-500 font-medium whitespace-nowrap">{date}</span>
                   </div>
                 ))}
               </div>
@@ -77,7 +77,7 @@ export default function EventsSection() {
 
             <a
               href="#"
-              className="inline-flex items-center gap-2 border-2 border-dizimus-900 text-dizimus-900 font-semibold px-6 py-3 rounded-lg hover:bg-dizimus-900 hover:text-white transition-all group"
+              className="inline-flex items-center gap-2 border-2 border-ecclesia-900 text-ecclesia-900 font-semibold px-6 py-3 rounded-lg hover:bg-ecclesia-900 hover:text-white transition-all group"
             >
               Gerenciar eventos
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

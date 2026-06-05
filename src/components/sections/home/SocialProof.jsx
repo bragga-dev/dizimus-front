@@ -21,11 +21,11 @@ export default function SocialProof() {
     <section className="bg-white py-12 px-6 border-b border-gray-100">
       <div className="max-w-7xl mx-auto">
         <p className="text-center text-sm text-gray-500 font-medium mb-8">
-          Mais de 2.000 igrejas em todo o Brasil já usam o Dizimus
+          Mais de 2.000 igrejas em todo o Brasil já usam o ecclesia
         </p>
         <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-12">
           {churches.map(name => (
-            <div key={name} className="flex items-center gap-2 text-gray-400 hover:text-dizimus-700 transition-colors group">
+            <div key={name} className="flex items-center gap-2 text-gray-400 hover:text-ecclesia-700 transition-colors group">
               <div className="text-current">
                 <ChurchIcon />
               </div>
