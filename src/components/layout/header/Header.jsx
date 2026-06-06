@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { Menu, X } from "lucide-react";
 
 import HeaderActions from "./HeaderActions";
@@ -12,15 +11,12 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const isAuthenticated = false;
+  // Troque por seu contexto/hook de autenticação real
+  const isAuthenticated = true; // ou false
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-
+    const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll);
-
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -55,31 +51,24 @@ export default function Header() {
           <HeaderNav />
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT — desktop */}
         <div className="hidden items-center gap-3 lg:flex">
           <HeaderSearch />
           <HeaderActions isAuthenticated={isAuthenticated} />
         </div>
 
-        {/* MOBILE BUTTON */}
+        {/* MOBILE HAMBURGER */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="
             flex h-11 w-11
             items-center justify-center
-
             rounded-xl
-
             border border-[#1E293B]
-
             bg-[#111827]
-
             text-white
-
             transition-all duration-300
-
             hover:bg-[#172033]
-
             lg:hidden
           "
         >
@@ -87,8 +76,8 @@ export default function Header() {
         </button>
       </div>
 
-      {/* MOBILE MENU */}
-      {mobileOpen && <MobileMenu />}
+      {/* MOBILE MENU — isAuthenticated passado corretamente */}
+      {mobileOpen && <MobileMenu isAuthenticated={isAuthenticated} />}
     </header>
   );
 }

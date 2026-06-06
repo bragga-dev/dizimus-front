@@ -1,4 +1,6 @@
 import { LogIn, User, UserCircle2, Bell } from "lucide-react";
+import DesktopUserDropdown from "./dropdowns/user/DesktopUserDropdown";
+import DesktopNotificationDropdown from "./dropdowns/notification/DesktopNotificationDropdown";
 
 export default function HeaderActions({ isAuthenticated }) {
   return (
@@ -39,49 +41,53 @@ export default function HeaderActions({ isAuthenticated }) {
       >
       </button>
 
-      {/* USER */}
-      <button
-        className="
-          flex h-11 w-11
-          items-center justify-center
-          rounded-xl
-          transition-all duration-300
-
-          [&_svg]:transition-colors
-          [&_svg]:duration-300
-
-          hover:[&_svg]:text-[#FFD700]
-          hover:bg-[#FFD700]/5
-        "
-      >
-        {isAuthenticated ? (
-          <UserCircle2 size={30} className="text-white" />
-        ) : (
-          <User size={30} className="text-white" />
-        )}
-      </button>
-
-      {/* NOTIFICATION */}
-      <button
-        className="
-          flex h-11 w-11
-          items-center justify-center
-          rounded-xl
-          transition-all duration-300
-          hover:bg-[#FFD700]/5
-          group
-        "
-      >
-        <Bell
-          size={30}
+      {/* USER — anônimo: redireciona /login | logado: abre dropdown */}
+      {isAuthenticated ? (
+        <DesktopUserDropdown isAuthenticated={isAuthenticated} />
+      ) : (
+        <a
+          href="/login"
           className="
-            text-white
-            transition-colors
-            duration-300
-            group-hover:text-[#FFD700]
+            flex h-11 w-11
+            items-center justify-center
+            rounded-xl
+            transition-all duration-300
+            [&_svg]:transition-colors
+            [&_svg]:duration-300
+            hover:[&_svg]:text-[#FFD700]
+            hover:bg-[#FFD700]/5
           "
-        />
-      </button>
+        >
+          <User size={30} className="text-white" />
+        </a>
+      )}
+
+      {/* NOTIFICATION — anônimo: redireciona /login | logado: abre dropdown */}
+      {isAuthenticated ? (
+        <DesktopNotificationDropdown />
+      ) : (
+        <a
+          href="/login"
+          className="
+            flex h-11 w-11
+            items-center justify-center
+            rounded-xl
+            transition-all duration-300
+            hover:bg-[#FFD700]/5
+            group
+          "
+        >
+          <Bell
+            size={30}
+            className="
+              text-white
+              transition-colors
+              duration-300
+              group-hover:text-[#FFD700]
+            "
+          />
+        </a>
+      )}
     </div>
   );
 }
