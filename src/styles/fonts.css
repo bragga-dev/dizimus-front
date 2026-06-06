@@ -1,9 +1,7 @@
 @font-face {
   font-family: "Cinzel";
 
-  src:
-    url("../assets/fonts/Cinzel-Variable.ttf")
-    format("truetype");
+  src: url("/assets/fonts/Cinzel/Cinzel-VariableFont_wght.ttf") format("truetype");
 
   font-weight: 400 900;
 
@@ -12,13 +10,9 @@
   font-display: swap;
 }
 
-.font-ecclesia {
-  font-family: "Cinzel", serif;
-}
-
 @font-face {
   font-family: "CormorantGaramond";
-  src: url("../assets/fonts/CormorantGaramond-VariableFont_wght.ttf") format("truetype");
+  src: url("/assets/fonts/Cormorant_Garamond/CormorantGaramond-VariableFont_wght.ttf") format("truetype");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -26,12 +20,9 @@
 
 @font-face {
   font-family: "CormorantGaramond";
-  src: url("../assets/fonts/CormorantGaramond-Italic-VariableFont_wght.ttf") format("truetype");
+  src: url("/assets/fonts/Cormorant_Garamond/CormorantGaramond-Italic-VariableFont_wght.ttf") format("truetype");
   font-weight: 100 900;
   font-style: italic;
   font-display: swap;
 }
 
-.font-navbar {
-  font-family: "CormorantGaramond", serif;
-}

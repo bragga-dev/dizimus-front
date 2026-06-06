@@ -17,6 +17,8 @@
   --color-gold-400: #f5c842;
   --color-gold-500: #e0a020;
   --color-gold-600: #c88a10;
+  --font-ecclesia: "Cinzel", serif;
+  --font-navbar: "CormorantGaramond", serif;
 }
 
 * {
