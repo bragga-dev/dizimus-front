@@ -85,29 +85,23 @@ export default function MobileMenu() {
       {/* LINKS */}
       <div className="flex flex-col gap-2">
         {navLinks.map((item) => (
-          <a
-            key={item}
-            href="#"
-            className="
-              font-navbar
-              rounded-xl
+          <a key={item.href} href={item.href} className="
+            rounded-xl
+            px-4 py-3
 
-              px-4 py-3
-              font-medium
+            font-navbar
+            text-lg
+            font-medium
+            text-[#CBD5E1]
 
-              text-lg
-              text-[#FFFFFF]
+            transition-all duration-300
 
-              transition-all duration-300
-
-              hover:bg-white/[0.05]
-              hover:text-white
-            "
-          >
-            {item}
+            hover:bg-[#E0B14A]/10
+            hover:text-white
+          ">
+            {item.label}
           </a>
         ))}
-
         {/* LOGIN */}
         <button
           className="
