@@ -1,135 +1,176 @@
-import { LogIn, Search } from "lucide-react";
+import {
+  Search,
+  User,
+  UserCircle2,
+  Bell,
+} from "lucide-react";
 
 import { navLinks } from "./constants";
 
-export default function MobileMenu() {
+export default function MobileMenu({ isAuthenticated }) {
   return (
     <div
       className="
-        border-t border-white/5
-
-        bg-[#0A0F1C]/95
-
+        border-t border-[#E0B14A]/10
+        bg-[#2E004F]
         px-6 py-6
-
-        backdrop-blur-2xl
-
         lg:hidden
       "
     >
+      {/* ACTIONS */}
+      <div
+        className="
+          mb-6
+          flex
+          items-center
+          justify-end
+          gap-3
+        "
+      >
+        {/* USER */}
+        <button
+          className="
+            flex h-12 w-12
+            items-center justify-center
+            rounded-xl
+
+            transition-all duration-300
+
+            [&_svg]:transition-colors
+            [&_svg]:duration-300
+
+            hover:bg-[#FFD700]/5
+            hover:[&_svg]:text-[#FFD700]
+          "
+        >
+          {isAuthenticated ? (
+            <UserCircle2
+              size={30}
+              className="text-white"
+            />
+          ) : (
+            <User
+              size={30}
+              className="text-white"
+            />
+          )}
+        </button>
+
+        {/* NOTIFICATION */}
+        <button
+          className="
+            group
+            flex h-12 w-12
+            items-center justify-center
+            rounded-xl
+
+            transition-all duration-300
+
+            hover:bg-[#FFD700]/5
+          "
+        >
+          <Bell
+            size={30}
+            className="
+              text-white
+              transition-colors
+              duration-300
+              group-hover:text-[#FFD700]
+            "
+          />
+        </button>
+      </div>
+
       {/* SEARCH */}
       <div
         className="
           mb-5
-
           flex items-center
-
           overflow-hidden
-
           rounded-2xl
+          bg-white
 
-          border border-[#1E293B]
+          transition-all duration-300
 
-          bg-[#111827]
+          focus-within:ring-4
+          focus-within:ring-[#673DE6]/20
         "
       >
-        <div
+        <input
+          type="text"
+          placeholder="Buscar..."
           className="
-            flex flex-1 items-center gap-3
-            px-4
+            flex-1
+            bg-transparent
+            px-6 py-4
+
+            font-navbar
+            text-lg
+            font-bold
+
+            text-[#2E004F]
+
+            placeholder:text-[#6B4B8A]
+
+            outline-none
           "
-        >
-          <Search size={18} className="text-[#64748B]" />
+        />
 
-          <input
-            type="text"
-            placeholder="Buscar..."
-            className="
-              flex-1
-
-              bg-transparent
-
-              py-3
-
-              font-navbar
-              text-lg
-              text-white
-
-              placeholder:text-[#64748B]
-
-              outline-none
-            "
-          />
-        </div>
-
-        {/* BUTTON */}
         <button
           className="
             flex items-center justify-center
+            px-6 py-4
 
-            border-l border-[#1E293B]
+            text-[#2E004F]
 
-            bg-gradient-to-r
-            from-[#673DE6]
-            to-[#8B5CF6]
+            transition-all duration-300
 
-            px-4 py-3
-
-            text-white
+            hover:text-[#673DE6]
           "
         >
-          <Search size={18} />
+          <Search size={24} />
         </button>
       </div>
 
       {/* LINKS */}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1">
         {navLinks.map((item) => (
-          <a key={item.href} href={item.href} className="
-            rounded-xl
-            px-4 py-3
+          <a
+            key={item.href}
+            href={item.href}
+            className="
+              relative
+              rounded-xl
+              px-4
+              py-3
 
-            font-navbar
-            text-lg
-            font-medium
-            text-[#CBD5E1]
+              font-navbar
+              text-xl
+              font-medium
 
-            transition-all duration-300
+              text-[#CBD5E1]
 
-            hover:bg-[#E0B14A]/10
-            hover:text-white
-          ">
+              transition-all
+              duration-300
+
+              hover:text-white
+
+              after:absolute
+              after:bottom-0
+              after:left-1/2
+              after:h-[2px]
+              after:w-0
+              after:-translate-x-1/2
+              after:bg-[#E0B14A]
+              after:transition-all
+              after:duration-300
+
+              hover:after:w-[70%]
+            "
+          >
             {item.label}
           </a>
         ))}
-        {/* LOGIN */}
-        <button
-          className="
-            mt-4
-
-            flex items-center justify-center gap-2
-
-            font-navbar
-            rounded-xl
-
-            border border-[#1E293B]
-
-            bg-[#111827]
-
-            px-4 py-4
-
-            text-lg
-            font-bold
-            text-white
-
-            transition-all duration-300
-
-            hover:bg-[#172033]
-          "
-        >
-          <LogIn size={18} />
-          Entrar
-        </button>
       </div>
     </div>
   );
