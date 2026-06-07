@@ -3,12 +3,10 @@ import {
   LayoutDashboard,
   Settings,
   LogOut,
+  ChevronRight,
 } from "lucide-react";
 
-export default function DesktopUserDropdown({
-  open,
-  onClose,
-}) {
+export default function DesktopUserDropdown({ open, onClose, user }) {
   if (!open) return null;
 
   const items = [
@@ -16,133 +14,147 @@ export default function DesktopUserDropdown({
       label: "Meu Perfil",
       icon: User,
       href: "/profile",
+      description: "Edite suas informações",
     },
     {
       label: "Dashboard",
       icon: LayoutDashboard,
       href: "/dashboard",
+      description: "Visão geral da igreja",
     },
     {
       label: "Configurações",
       icon: Settings,
       href: "/settings",
+      description: "Preferências do sistema",
     },
   ];
 
   return (
-    <div
-      className="
-        absolute
-        right-0
-        top-[calc(100%+12px)]
-        z-50
+    <>
+      {/* Overlay */}
+      <div
+        className="fixed inset-0 z-40"
+        onClick={onClose}
+      />
 
-        w-72
-
-        overflow-hidden
-        rounded-2xl
-
-        border
-        border-[#E0B14A]/10
-
-        bg-[#2E004F]
-
-        shadow-2xl
-      "
-    >
-      {/* HEADER */}
       <div
         className="
-          border-b
-          border-white/10
-          px-5
-          py-4
+          absolute right-0 top-[calc(100%+10px)] z-50
+          w-80 overflow-hidden
+          rounded-2xl
+          border border-ecclesia-300/30
+          bg-white
+          shadow-[0_8px_40px_rgba(103,61,230,0.18)]
+          animate-in fade-in slide-in-from-top-2 duration-200
         "
       >
-        <p className="font-navbar text-white">
-          Minha Conta
-        </p>
+        {/* HEADER */}
+        <div className="bg-gradient-to-br from-ecclesia-800 to-ecclesia-900 px-5 py-4 flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 ring-2 ring-white/20">
+            <User size={20} className="text-white/80" />
+          </div>
 
-        <p
-          className="
-            mt-1
-            text-sm
-            text-[#CBD5E1]
-          "
-        >
-          Gerencie sua conta
-        </p>
-      </div>
+          <div>
+            <p className="font-navbar font-bold text-white text-base leading-tight">
+              {user?.name ?? "Minha Conta"}
+            </p>
 
-      {/* LINKS */}
-      <div className="p-2">
-        {items.map((item) => {
-          const Icon = item.icon;
+            <p className="text-ecclesia-300 text-xs mt-0.5 font-sans">
+              {user?.email ?? "Administrador"}
+            </p>
+          </div>
+        </div>
 
-          return (
-            <a
-              key={item.href}
-              href={item.href}
+        {/* LINKS */}
+        <div className="p-2">
+          {items.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <a
+                key={item.href}
+                href={item.href}
+                className="
+                  group flex items-center gap-3
+                  rounded-xl px-4 py-3
+                  transition-all duration-200
+                  hover:bg-ecclesia-600
+                "
+              >
+                <div
+                  className="
+                    flex h-9 w-9 items-center justify-center rounded-lg
+                    bg-ecclesia-50 text-ecclesia-600
+                    group-hover:bg-white/20
+                    group-hover:text-white
+                    transition-all duration-200
+                  "
+                >
+                  <Icon size={18} />
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <p
+                    className="
+                      font-navbar font-semibold
+                      text-black text-sm leading-tight
+                      group-hover:text-white
+                    "
+                  >
+                    {item.label}
+                  </p>
+
+                  <p
+                    className="
+                      text-gray-500 text-xs mt-0.5 font-sans
+                      group-hover:text-white/80
+                    "
+                  >
+                    {item.description}
+                  </p>
+                </div>
+
+                <ChevronRight
+                  size={14}
+                  className="
+                    text-gray-300
+                    group-hover:text-white
+                    transition-colors
+                  "
+                />
+              </a>
+            );
+          })}
+        </div>
+
+        {/* FOOTER */}
+        <div className="border-t border-gray-100 p-2">
+          <button
+            className="
+              group flex w-full items-center gap-3
+              rounded-xl px-4 py-3
+              transition-all duration-200
+              hover:bg-red-50
+            "
+          >
+            <div
               className="
-                flex
-                items-center
-                gap-3
-
-                rounded-xl
-
-                px-4
-                py-3
-
-                text-[#CBD5E1]
-
-                transition-all
-                duration-300
-
-                hover:bg-[#FFD700]/5
-                hover:text-[#FFD700]
+                flex h-9 w-9 items-center justify-center rounded-lg
+                bg-red-50 text-red-400
+                group-hover:bg-red-100
+                transition-all duration-200
               "
             >
-              <Icon size={18} />
+              <LogOut size={18} />
+            </div>
 
-              {item.label}
-            </a>
-          );
-        })}
+            <span className="font-navbar font-semibold text-red-500 text-sm">
+              Sair da conta
+            </span>
+          </button>
+        </div>
       </div>
-
-      {/* FOOTER */}
-      <div
-        className="
-          border-t
-          border-white/10
-          p-2
-        "
-      >
-        <button
-          className="
-            flex
-            w-full
-            items-center
-            gap-3
-
-            rounded-xl
-
-            px-4
-            py-3
-
-            text-red-300
-
-            transition-all
-            duration-300
-
-            hover:bg-red-500/10
-          "
-        >
-          <LogOut size={18} />
-
-          Sair
-        </button>
-      </div>
-    </div>
+    </>
   );
 }

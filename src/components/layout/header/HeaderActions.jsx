@@ -1,49 +1,41 @@
-import { LogIn, User, UserCircle2, Bell } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { UserCircle2, Bell } from "lucide-react";
 import DesktopUserDropdown from "./dropdowns/user/DesktopUserDropdown";
 import DesktopNotificationDropdown from "./dropdowns/notification/DesktopNotificationDropdown";
 
 export default function HeaderActions({ isAuthenticated }) {
+  const [userOpen, setUserOpen] = useState(false);
+  const userRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (userRef.current && !userRef.current.contains(e.target)) setUserOpen(false);
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div
-      className="
-        hidden items-center gap-3
-        lg:flex
-      "
-    >
-      {/* LOGIN */}
-      <button
-        className="
-          relative
-          flex items-center gap-2
-          rounded-xl
-          px-4 py-2.5
-          font-navbar
-          text-lg
-          font-medium
-          text-[#CBD5E1]
+    <div className="hidden items-center gap-3 lg:flex">
 
-          transition-all duration-300
-
-          after:absolute
-          after:bottom-0
-          after:left-1/2
-          after:h-[2px]
-          after:w-0
-          after:-translate-x-1/2
-          after:bg-[#FFFF00]
-
-          after:transition-all
-          after:duration-300
-
-          hover:text-[#FFFF00]
-          hover:after:w-[70%]
-        "
-      >
-      </button>
-
-      {/* USER — anônimo: redireciona /login | logado: abre dropdown */}
+      {/* USER */}
       {isAuthenticated ? (
-        <DesktopUserDropdown isAuthenticated={isAuthenticated} />
+        <div className="relative" ref={userRef}>
+          <button
+            onClick={() => setUserOpen((v) => !v)}
+            className="
+              flex h-11 w-11
+              items-center justify-center
+              rounded-xl
+              transition-all duration-300
+              [&_svg]:transition-colors [&_svg]:duration-300
+              hover:bg-[#FFD700]/5 hover:[&_svg]:text-[#FFD700]
+            "
+          >
+            <UserCircle2 size={30} className="text-white" />
+          </button>
+          <DesktopUserDropdown open={userOpen} onClose={() => setUserOpen(false)} />
+        </div>
       ) : (
         <a
           href="/login"
@@ -52,17 +44,15 @@ export default function HeaderActions({ isAuthenticated }) {
             items-center justify-center
             rounded-xl
             transition-all duration-300
-            [&_svg]:transition-colors
-            [&_svg]:duration-300
-            hover:[&_svg]:text-[#FFD700]
-            hover:bg-[#FFD700]/5
+            [&_svg]:transition-colors [&_svg]:duration-300
+            hover:bg-[#FFD700]/5 hover:[&_svg]:text-[#FFD700]
           "
         >
-          <User size={30} className="text-white" />
+          <UserCircle2 size={30} className="text-white" />
         </a>
       )}
 
-      {/* NOTIFICATION — anônimo: redireciona /login | logado: abre dropdown */}
+      {/* NOTIFICATION */}
       {isAuthenticated ? (
         <DesktopNotificationDropdown />
       ) : (
@@ -79,12 +69,7 @@ export default function HeaderActions({ isAuthenticated }) {
         >
           <Bell
             size={30}
-            className="
-              text-white
-              transition-colors
-              duration-300
-              group-hover:text-[#FFD700]
-            "
+            className="text-white transition-colors duration-300 group-hover:text-[#FFD700]"
           />
         </a>
       )}

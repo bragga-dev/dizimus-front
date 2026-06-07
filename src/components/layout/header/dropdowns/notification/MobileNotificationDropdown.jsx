@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, ChevronRight, CheckCheck } from "lucide-react";
+import { X, Bell, CheckCheck } from "lucide-react";
 import NotificationItem from "./NotificationItem";
 import {
   mockNotifications,
@@ -7,8 +7,7 @@ import {
   groupNotificationsByDate,
 } from "./notificationHelpers";
 
-export default function MobileNotificationDropdown() {
-  const [open, setOpen] = useState(false);
+export default function MobileNotificationDropdown({ onClose }) {
   const [notifications, setNotifications] = useState(mockNotifications);
 
   const unread = getUnreadCount(notifications);
@@ -25,84 +24,79 @@ export default function MobileNotificationDropdown() {
   }
 
   return (
-    <div className="border-t border-[#673DE6]/15 mt-2 pt-2">
-      {/* Toggle button */}
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="
-          flex w-full items-center gap-3
-          rounded-xl px-3 py-3
-          transition-all duration-200
-          hover:bg-[#673DE6]/10
-        "
-      >
-        {/* Icon with badge */}
-        <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#271460]/60 border border-[#673DE6]/20">
+    <div className="fixed inset-0 z-50 flex flex-col bg-[#160b3c]">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-[#673DE6]/20 px-6 py-5 shrink-0">
+        <div className="flex items-center gap-2">
           <Bell size={18} className="text-[#9D7BFF]" />
+          <h3 className="text-base font-bold text-white">Notificações</h3>
           {unread > 0 && (
             <span
               className="
-                absolute -top-1 -right-1
-                flex h-4 w-4 items-center justify-center
                 rounded-full
-                bg-gradient-to-br from-[#673DE6] to-[#3d2096]
-                border border-[#2E004F]
-                text-[9px] font-bold text-white
+                bg-[#673DE6]/25 border border-[#673DE6]/30
+                px-2 py-0.5
+                text-[10px] font-bold text-[#9D7BFF]
               "
             >
-              {unread}
+              {unread} novas
             </span>
           )}
         </div>
-
-        <div className="flex-1 text-left">
-          <span className="text-sm font-bold text-white">Notificações</span>
-          {unread > 0 && (
-            <p className="text-[11px] text-[#9D7BFF] mt-0.5">{unread} não lida{unread > 1 ? "s" : ""}</p>
-          )}
-        </div>
-
-        <ChevronRight
-          size={16}
-          className={`
-            text-[#7b7498] transition-transform duration-300
-            ${open ? "rotate-90" : ""}
-          `}
-        />
-      </button>
-
-      {/* Expanded list */}
-      {open && (
-        <div className="mt-1">
-          {/* Mark all read */}
+        <div className="flex items-center gap-2">
           {unread > 0 && (
             <button
               onClick={handleMarkAllRead}
               className="
                 flex items-center gap-1.5
-                w-full justify-end
-                px-3 pb-2
+                rounded-lg px-3 py-2
                 text-[11px] font-semibold text-[#9D7BFF]
-                hover:text-[#b09aff]
-                transition-colors duration-200
+                transition-all duration-200
+                hover:bg-[#673DE6]/15 hover:text-[#b09aff]
               "
             >
-              <CheckCheck size={12} />
-              Marcar todas como lidas
+              <CheckCheck size={13} />
+              Marcar todas
             </button>
           )}
+          <button
+            onClick={onClose}
+            className="
+              flex h-10 w-10 items-center justify-center
+              rounded-xl text-[#CBD5E1]
+              transition-all duration-200
+              hover:bg-[#673DE6]/15 hover:text-white
+            "
+          >
+            <X size={22} />
+          </button>
+        </div>
+      </div>
 
-          {groups.length === 0 ? (
-            <div className="flex flex-col items-center py-8 text-center">
-              <Bell size={22} className="text-[#7b7498] mb-2" />
-              <p className="text-sm text-[#7b7498]">Nenhuma notificação.</p>
+      {/* Scrollable list */}
+      <div className="flex-1 overflow-y-auto py-2">
+        {groups.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div
+              className="
+                flex h-14 w-14 items-center justify-center
+                rounded-2xl
+                bg-[#271460]/60 border border-[#673DE6]/15
+                mb-4
+              "
+            >
+              <Bell size={22} className="text-[#7b7498]" />
             </div>
-          ) : (
-            groups.map((group) => (
-              <div key={group.label}>
-                <p className="px-3 pt-2 pb-1 text-[10px] font-bold text-[#7b7498] uppercase tracking-widest">
-                  {group.label}
-                </p>
+            <p className="text-sm font-semibold text-[#c8c0e8]">Tudo em dia!</p>
+            <p className="text-[12px] text-[#7b7498] mt-1">Nenhuma notificação no momento.</p>
+          </div>
+        ) : (
+          groups.map((group) => (
+            <div key={group.label}>
+              <p className="px-5 pt-4 pb-1 text-[10px] font-bold text-[#7b7498] uppercase tracking-widest">
+                {group.label}
+              </p>
+              <div className="px-2">
                 {group.items.map((n) => (
                   <NotificationItem
                     key={n.id}
@@ -112,23 +106,26 @@ export default function MobileNotificationDropdown() {
                   />
                 ))}
               </div>
-            ))
-          )}
+            </div>
+          ))
+        )}
+      </div>
 
-          <a
-            href="/notificacoes"
-            className="
-              flex w-full items-center justify-center
-              rounded-xl mt-2 py-2.5
-              text-sm font-semibold text-[#9D7BFF]
-              transition-all duration-200
-              hover:bg-[#673DE6]/10
-            "
-          >
-            Ver todas →
-          </a>
-        </div>
-      )}
+      {/* Footer */}
+      <div className="border-t border-[#673DE6]/15 p-4 shrink-0">
+        <a
+          href="/notificacoes"
+          className="
+            flex w-full items-center justify-center
+            rounded-xl py-3
+            text-sm font-semibold text-[#9D7BFF]
+            transition-all duration-200
+            hover:bg-[#673DE6]/10 hover:text-[#b09aff]
+          "
+        >
+          Ver todas as notificações
+        </a>
+      </div>
     </div>
   );
 }

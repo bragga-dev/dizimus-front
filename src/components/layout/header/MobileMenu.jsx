@@ -1,5 +1,7 @@
-import { Search, User, UserCircle2, Bell } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+
+import { createPortal } from "react-dom";
+import { Search, UserCircle2, Bell, X } from "lucide-react";
+import { useState } from "react";
 import { navLinks } from "./constants";
 import MobileUserDropdown from "./dropdowns/user/MobileUserDropdown";
 import MobileNotificationDropdown from "./dropdowns/notification/MobileNotificationDropdown";
@@ -22,20 +24,17 @@ export default function MobileMenu({ isAuthenticated }) {
 
         {/* USER */}
         {isAuthenticated ? (
-          <div className="relative">
-            <button
-              onClick={() => setUserOpen((v) => !v)}
-              className="
-                flex h-12 w-12 items-center justify-center rounded-xl
-                transition-all duration-300
-                [&_svg]:transition-colors [&_svg]:duration-300
-                hover:bg-[#FFD700]/5 hover:[&_svg]:text-[#FFD700]
-              "
-            >
-              <UserCircle2 size={30} className="text-white" />
-            </button>
-            {userOpen && <MobileUserDropdown isAuthenticated={isAuthenticated} inline />}
-          </div>
+          <button
+            onClick={() => { setUserOpen(true); setNotifOpen(false); }}
+            className="
+              flex h-12 w-12 items-center justify-center rounded-xl
+              transition-all duration-300
+              [&_svg]:transition-colors [&_svg]:duration-300
+              hover:bg-[#FFD700]/5 hover:[&_svg]:text-[#FFD700]
+            "
+          >
+            <UserCircle2 size={30} className="text-white" />
+          </button>
         ) : (
           <a
             href="/login"
@@ -46,24 +45,21 @@ export default function MobileMenu({ isAuthenticated }) {
               hover:bg-[#FFD700]/5 hover:[&_svg]:text-[#FFD700]
             "
           >
-            <User size={30} className="text-white" />
+            <UserCircle2 size={30} className="text-white" />
           </a>
         )}
 
         {/* NOTIFICATION */}
         {isAuthenticated ? (
-          <div className="relative">
-            <button
-              onClick={() => setNotifOpen((v) => !v)}
-              className="
-                group flex h-12 w-12 items-center justify-center rounded-xl
-                transition-all duration-300 hover:bg-[#FFD700]/5
-              "
-            >
-              <Bell size={30} className="text-white transition-colors duration-300 group-hover:text-[#FFD700]" />
-            </button>
-            {notifOpen && <MobileNotificationDropdown isAuthenticated={isAuthenticated} inline />}
-          </div>
+          <button
+            onClick={() => { setNotifOpen(true); setUserOpen(false); }}
+            className="
+              group flex h-12 w-12 items-center justify-center rounded-xl
+              transition-all duration-300 hover:bg-[#FFD700]/5
+            "
+          >
+            <Bell size={30} className="text-white transition-colors duration-300 group-hover:text-[#FFD700]" />
+          </button>
         ) : (
           <a
             href="/login"
@@ -118,6 +114,11 @@ export default function MobileMenu({ isAuthenticated }) {
           </a>
         ))}
       </div>
+
+      {/* FULLSCREEN OVERLAYS */}
+      {userOpen && createPortal(<MobileUserDropdown isAuthenticated={isAuthenticated} onClose={() => setUserOpen(false)} />, document.body)}
+      {notifOpen && createPortal(<MobileNotificationDropdown onClose={() => setNotifOpen(false)} />, document.body)}
     </div>
   );
 }
+
