@@ -21,7 +21,6 @@ export default function Hero() {
         className="relative w-full overflow-hidden"
         style={{ height: 'clamp(380px, 60vw, 680px)' }}
       >
-        {/* Foto de capa — troque a URL pelo caminho da sua imagem real */}
         <img
           src={capaImg}
           alt="Comunidade em adoração"
@@ -29,7 +28,7 @@ export default function Hero() {
           loading="eager"
         />
 
-        {/* Overlay escuro com gradiente para o texto ser legível */}
+        {/* Overlay */}
         <div
           className="absolute inset-0"
           style={{
@@ -38,23 +37,29 @@ export default function Hero() {
           }}
         />
 
-        {/* Texto de marketing sobre a foto */}
+        {/* Texto de marketing */}
         <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
 
           {/* Badge */}
           <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-1.5 mb-6">
             <span className="h-1.5 w-1.5 rounded-full bg-yellow-400 animate-pulse" />
-            <span className="text-xs font-semibold text-white/90 uppercase tracking-widest">
-              Plataforma de gestão para igrejas
+            <span
+              className="text-xs font-semibold text-white/90 uppercase tracking-widest"
+              style={{ fontFamily: 'var(--font-ecclesia)' }}
+            >
+              Gestão para igrejas
             </span>
           </div>
 
-          {/* Headline principal */}
+          {/* Headline */}
           <h1
-            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.05] mb-5 max-w-4xl"
-            style={{ textShadow: '0 2px 24px rgba(0,0,0,0.5)' }}
+            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.1] mb-5 max-w-4xl"
+            style={{
+              fontFamily: 'var(--font-ecclesia)',
+              textShadow: '0 2px 24px rgba(0,0,0,0.5)',
+            }}
           >
-            Seu ministério merece{' '}
+            Sua missão é servir.{' '}
             <span
               style={{
                 background: 'linear-gradient(90deg, #8b63ff, #e0a020)',
@@ -62,7 +67,7 @@ export default function Hero() {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              excelência.
+              Não administrar.
             </span>
           </h1>
 
@@ -71,8 +76,8 @@ export default function Hero() {
             className="text-base sm:text-lg text-white/75 max-w-xl mb-8 leading-relaxed"
             style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
           >
-            Gerencie membros, dízimos, eventos e comunicação
-            em um só lugar — para você dedicar mais tempo ao que realmente importa.
+            Membros, dízimos, eventos e comunicação — tudo em um só lugar.
+            Para você gastar energia onde ela realmente importa.
           </p>
 
           {/* CTAs */}
@@ -80,9 +85,9 @@ export default function Hero() {
             <a
               href="#"
               className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-sm font-bold text-white transition-all hover:shadow-2xl active:scale-95"
-              style={{ background: 'var(--purple-500)' }}
+              style={{ background: 'var(--color-ecclesia-500)' }}
             >
-              Começar gratuitamente
+              Comece agora — é grátis
               <ArrowRight size={16} />
             </a>
             <a
@@ -94,7 +99,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Wave de transição para a seção abaixo */}
+        {/* Wave de transição */}
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
           <svg viewBox="0 0 1440 56" fill="none" className="w-full block">
             <path
@@ -110,7 +115,7 @@ export default function Hero() {
         className="relative overflow-hidden pt-0 pb-0 flex flex-col"
         style={{ background: 'var(--gradient-hero)' }}
       >
-        {/* Grid pattern overlay */}
+        {/* Grid pattern */}
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.04]"
           style={{
@@ -143,7 +148,12 @@ export default function Hero() {
               <div className="flex items-center gap-8">
                 {stats.map(({ value, label }) => (
                   <div key={label}>
-                    <p className="text-xl font-extrabold text-white">{value}</p>
+                    <p
+                      className="text-xl font-extrabold text-white"
+                      style={{ fontFamily: 'var(--font-ecclesia)' }}
+                    >
+                      {value}
+                    </p>
                     <p className="text-xs text-white/40">{label}</p>
                   </div>
                 ))}
@@ -177,7 +187,12 @@ export default function Hero() {
                   <div className="w-32 shrink-0 bg-ecclesia-950/80 p-2.5">
                     <div className="mb-3 flex items-center gap-1.5 px-2 py-1">
                       <div className="flex h-4 w-4 items-center justify-center rounded bg-ecclesia-500/20 text-[8px]">⛪</div>
-                      <span className="text-[9px] font-extrabold text-white">ecclesia</span>
+                      <span
+                        className="text-[9px] font-extrabold text-white"
+                        style={{ fontFamily: 'var(--font-ecclesia)' }}
+                      >
+                        ecclesia
+                      </span>
                     </div>
                     {['Início','Dízimos','Membros','Batizados','Casamentos','Eventos','Relatórios','Config.'].map((item, i) => (
                       <div

@@ -1,131 +1,361 @@
 import { useState } from "react";
-import { X, Bell, CheckCheck } from "lucide-react";
+import {
+  X,
+  Bell,
+  CheckCheck,
+  ChevronRight,
+} from "lucide-react";
+
 import NotificationItem from "./NotificationItem";
+
 import {
   mockNotifications,
   getUnreadCount,
   groupNotificationsByDate,
 } from "./notificationHelpers";
 
-export default function MobileNotificationDropdown({ onClose }) {
-  const [notifications, setNotifications] = useState(mockNotifications);
+export default function MobileNotificationDropdown({
+  onClose,
+}) {
+  const [notifications, setNotifications] =
+    useState(mockNotifications);
 
-  const unread = getUnreadCount(notifications);
-  const groups = groupNotificationsByDate(notifications);
+  const unread =
+    getUnreadCount(notifications);
+
+  const groups =
+    groupNotificationsByDate(notifications);
 
   function handleRead(id) {
     setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+      prev.map((n) =>
+        n.id === id
+          ? {
+              ...n,
+              read: true,
+            }
+          : n
+      )
     );
   }
 
   function handleMarkAllRead() {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    setNotifications((prev) =>
+      prev.map((n) => ({
+        ...n,
+        read: true,
+      }))
+    );
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-[#160b3c]">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#673DE6]/20 px-6 py-5 shrink-0">
-        <div className="flex items-center gap-2">
-          <Bell size={18} className="text-[#9D7BFF]" />
-          <h3 className="text-base font-bold text-white">Notificações</h3>
-          {unread > 0 && (
-            <span
+    <div
+      className="
+        fixed
+        inset-0
+        z-50
+
+        bg-white
+
+        flex
+        flex-col
+      "
+    >
+
+      {/* HEADER */}
+
+      <div
+        className="
+          bg-gradient-to-br
+          from-ecclesia-800
+          to-ecclesia-900
+
+          px-6
+          pt-6
+          pb-5
+
+          flex
+          items-center
+          justify-between
+
+          shrink-0
+        "
+      >
+
+        <div className="flex items-center gap-5">
+
+          <div
+            className="
+              flex
+
+              h-16
+              w-16
+
+              items-center
+              justify-center
+
+              rounded-[22px]
+
+              bg-white/6
+            "
+          >
+            <Bell
+              size={30}
+              className="text-white"
+            />
+          </div>
+
+          <div>
+
+            <h2
               className="
-                rounded-full
-                bg-[#673DE6]/25 border border-[#673DE6]/30
-                px-2 py-0.5
-                text-[10px] font-bold text-[#9D7BFF]
+                text-xl
+                font-bold
+                text-white
               "
             >
-              {unread} novas
-            </span>
-          )}
+              Notificações
+            </h2>
+
+            <p
+              className="
+                mt-1
+                text-sm
+                text-white/65
+              "
+            >
+              {unread}
+              {" "}
+              não lidas
+            </p>
+
+          </div>
+
         </div>
-        <div className="flex items-center gap-2">
+
+        <div className="flex items-center">
+
           {unread > 0 && (
             <button
               onClick={handleMarkAllRead}
               className="
-                flex items-center gap-1.5
-                rounded-lg px-3 py-2
-                text-[11px] font-semibold text-[#9D7BFF]
-                transition-all duration-200
-                hover:bg-[#673DE6]/15 hover:text-[#b09aff]
+                mr-2
+
+                rounded-[18px]
+
+                px-4
+                py-3
+
+                text-sm
+                font-semibold
+
+                text-white/80
+
+                hover:bg-white/10
               "
             >
-              <CheckCheck size={13} />
-              Marcar todas
+              <div className="flex items-center gap-2">
+                <CheckCheck size={18} />
+                Marcar
+              </div>
             </button>
           )}
+
           <button
             onClick={onClose}
             className="
-              flex h-10 w-10 items-center justify-center
-              rounded-xl text-[#CBD5E1]
-              transition-all duration-200
-              hover:bg-[#673DE6]/15 hover:text-white
+              flex
+
+              h-12
+              w-[92px]
+
+              items-center
+              justify-center
+
+              text-white
+
+              hover:bg-white/8
             "
           >
-            <X size={22} />
+            <X size={28} />
           </button>
+
         </div>
+
       </div>
 
-      {/* Scrollable list */}
-      <div className="flex-1 overflow-y-auto py-2">
+      {/* LISTA */}
+
+      <div
+        className="
+          flex-1
+
+          overflow-y-auto
+
+          px-5
+          py-5
+        "
+      >
+
         {groups.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
+
+          <div
+            className="
+              flex
+              h-full
+
+              flex-col
+
+              items-center
+              justify-center
+            "
+          >
+
             <div
               className="
-                flex h-14 w-14 items-center justify-center
-                rounded-2xl
-                bg-[#271460]/60 border border-[#673DE6]/15
-                mb-4
+                flex
+
+                h-20
+                w-20
+
+                items-center
+                justify-center
+
+                rounded-[26px]
+
+                bg-ecclesia-50
+
+                text-ecclesia-600
               "
             >
-              <Bell size={22} className="text-[#7b7498]" />
+              <Bell size={34} />
             </div>
-            <p className="text-sm font-semibold text-[#c8c0e8]">Tudo em dia!</p>
-            <p className="text-[12px] text-[#7b7498] mt-1">Nenhuma notificação no momento.</p>
+
+            <h3
+              className="
+                mt-6
+
+                text-xl
+                font-bold
+              "
+            >
+              Tudo em dia
+            </h3>
+
+            <p
+              className="
+                mt-2
+
+                text-gray-500
+              "
+            >
+              Nenhuma notificação.
+            </p>
+
           </div>
+
         ) : (
+
           groups.map((group) => (
-            <div key={group.label}>
-              <p className="px-5 pt-4 pb-1 text-[10px] font-bold text-[#7b7498] uppercase tracking-widest">
+
+            <div
+              key={group.label}
+              className="mb-8"
+            >
+
+              <p
+                className="
+                  mb-3
+
+                  px-2
+
+                  text-sm
+                  font-bold
+
+                  uppercase
+
+                  tracking-widest
+
+                  text-ecclesia-500
+                "
+              >
                 {group.label}
               </p>
-              <div className="px-2">
+
+              <div className="space-y-3">
+
                 {group.items.map((n) => (
+
                   <NotificationItem
                     key={n.id}
                     notification={n}
                     onRead={handleRead}
-                    compact
+                    compact={false}
                   />
+
                 ))}
+
               </div>
+
             </div>
+
           ))
+
         )}
+
       </div>
 
-      {/* Footer */}
-      <div className="border-t border-[#673DE6]/15 p-4 shrink-0">
+      {/* FOOTER */}
+
+      <div
+        className="
+          px-5
+          pb-6
+        "
+      >
+
         <a
           href="/notificacoes"
           className="
-            flex w-full items-center justify-center
-            rounded-xl py-3
-            text-sm font-semibold text-[#9D7BFF]
-            transition-all duration-200
-            hover:bg-[#673DE6]/10 hover:text-[#b09aff]
+            group
+
+            flex
+            items-center
+            justify-center
+
+            gap-3
+
+            rounded-[26px]
+
+            bg-ecclesia-50
+
+            px-6
+            py-5
+
+            font-semibold
+
+            text-ecclesia-700
+
+            hover:bg-ecclesia-600
+            hover:text-white
           "
         >
-          Ver todas as notificações
+
+          Ver todas
+
+          <ChevronRight
+            size={20}
+            className="
+              transition-transform
+
+              group-hover:translate-x-1
+            "
+          />
+
         </a>
+
       </div>
+
     </div>
   );
 }

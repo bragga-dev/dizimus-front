@@ -12,7 +12,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // Troque por seu contexto/hook de autenticação real
-  const isAuthenticated = true; // ou false
+  const isAuthenticated = true;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -21,63 +21,71 @@ export default function Header() {
   }, []);
 
   return (
-    <header
-      className={`
-        ${
-          scrolled
-            ? `
-            border-b border-[#E0B14A]/10
-            bg-[#2E004F]/95
-            shadow-[0_10px_30px_rgba(46,0,79,0.35)]
-            backdrop-blur-xl
-          `
-            : `
-            bg-[#2E004F]
-          `
-        }
-      `}
-    >
-      <div
-        className="
-          mx-auto
-          flex h-20 max-w-7xl
-          items-center justify-between
-          px-6
-        "
+    <>
+      <header
+        className={`
+          sticky top-0 z-30
+          ${
+            scrolled
+              ? `
+              border-b border-[#E0B14A]/10
+              bg-[#2E004F]/95
+              shadow-[0_10px_30px_rgba(46,0,79,0.35)]
+              backdrop-blur-xl
+            `
+              : `
+              bg-[#2E004F]
+            `
+          }
+        `}
       >
-        {/* LEFT */}
-        <div className="flex items-center gap-14">
-          <HeaderLogo />
-          <HeaderNav />
-        </div>
-
-        {/* RIGHT — desktop */}
-        <div className="hidden items-center gap-3 lg:flex">
-          <HeaderSearch />
-          <HeaderActions isAuthenticated={isAuthenticated} />
-        </div>
-
-        {/* MOBILE HAMBURGER */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
+        <div
           className="
-            flex h-11 w-11
-            items-center justify-center
-            rounded-xl
-            border border-[#1E293B]
-            bg-[#111827]
-            text-white
-            transition-all duration-300
-            hover:bg-[#172033]
-            lg:hidden
+            mx-auto
+            flex h-20 max-w-7xl
+            items-center justify-between
+            px-6
           "
         >
-          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
-      </div>
+          {/* LEFT */}
+          <div className="flex items-center gap-14">
+            <HeaderLogo />
+            <HeaderNav />
+          </div>
 
-      {/* MOBILE MENU — isAuthenticated passado corretamente */}
-      {mobileOpen && <MobileMenu isAuthenticated={isAuthenticated} />}
-    </header>
+          {/* RIGHT — desktop */}
+          <div className="hidden items-center gap-3 lg:flex">
+            <HeaderSearch />
+            <HeaderActions isAuthenticated={isAuthenticated} />
+          </div>
+
+          {/* MOBILE HAMBURGER */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
+            className="
+              flex h-11 w-11
+              items-center justify-center
+              rounded-xl
+              border border-[#1E293B]
+              bg-[#111827]
+              text-white
+              transition-all duration-300
+              hover:bg-[#172033]
+              lg:hidden
+            "
+          >
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
+      </header>
+
+      {/* MOBILE MENU — drawer via portal */}
+      <MobileMenu
+        isOpen={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        isAuthenticated={isAuthenticated}
+      />
+    </>
   );
 }

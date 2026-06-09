@@ -1,111 +1,316 @@
-import { X, UserCircle2 } from "lucide-react";
+import { X, UserCircle2, ChevronRight } from "lucide-react";
 import { userMenuItems, logoutItem } from "./userMenuItems";
 
 const mockUser = {
   name: "Pastor João Silva",
   email: "joao@igrejagraca.com.br",
   church: "Igreja da Graça",
-  avatar: null,
 };
 
-export default function MobileUserDropdown({ isAuthenticated, onClose }) {
+export default function MobileUserDropdown({
+  isAuthenticated,
+  onClose,
+}) {
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-[#2E004F] overflow-y-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#673DE6]/20 px-6 py-5">
-        <div className="flex items-center gap-3">
+    <div
+      className="
+        fixed
+        inset-0
+        z-50
+
+        bg-white
+
+        flex
+        flex-col
+        overflow-y-auto
+      "
+    >
+
+      {/* HEADER */}
+      <div
+        className="
+          bg-gradient-to-br
+          from-ecclesia-800
+          to-ecclesia-900
+
+          px-6
+          pt-6
+          pb-5
+
+          flex
+          items-center
+          justify-between
+        "
+      >
+
+        <div className="flex items-center gap-5">
+
           <div
             className="
-              flex h-10 w-10 shrink-0 items-center justify-center
-              rounded-full
-              bg-gradient-to-br from-[#673DE6] to-[#3d2096]
-              border border-[#FFD700]/20
+              flex
+
+              h-16
+              w-16
+
+              items-center
+              justify-center
+
+              rounded-[22px]
+
+              bg-white/6
             "
           >
-            <UserCircle2 size={22} className="text-white/80" />
+            <UserCircle2
+              size={32}
+              className="text-white"
+            />
           </div>
-          <div className="flex flex-col leading-none">
-            <span className="text-sm font-bold text-white">{mockUser.name}</span>
-            <span className="text-[11px] text-[#7b7498] mt-0.5">{mockUser.church}</span>
+
+          <div>
+
+            <h2
+              className="
+                font-navbar
+                text-xl
+                font-bold
+                text-white
+              "
+            >
+              {mockUser.name}
+            </h2>
+
+            <p
+              className="
+                mt-1
+                text-sm
+                text-white/65
+              "
+            >
+              {mockUser.church}
+            </p>
+
           </div>
+
         </div>
+
         <button
           onClick={onClose}
           className="
-            flex h-10 w-10 items-center justify-center
-            rounded-xl text-[#CBD5E1]
-            transition-all duration-200
-            hover:bg-[#673DE6]/15 hover:text-white
+            flex
+            h-12
+            w-[92px]
+
+            items-center
+            justify-center
+
+            text-white
+
+            hover:bg-white/8
           "
         >
-          <X size={22} />
+          <X size={28} />
         </button>
+
       </div>
 
-      {/* Menu items */}
-      <div className="flex flex-col gap-0.5 p-4">
-        {userMenuItems.map((group) =>
-          group.items.map((item) => {
-            const Icon = item.icon;
-            return (
-              <a
-                key={item.href}
-                href={item.href}
-                className="
-                  flex items-center gap-3
-                  rounded-xl
-                  px-4 py-4
-                  text-[#c8c0e8]
-                  transition-all duration-200
-                  hover:bg-[#673DE6]/10
-                  hover:text-white
-                "
-              >
-                <div
+      {/* MENU */}
+      <div
+        className="
+          flex-1
+
+          px-5
+          py-6
+        "
+      >
+
+        <div className="space-y-2">
+
+          {userMenuItems.flatMap((group) =>
+            group.items.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={onClose}
                   className="
-                    flex h-8 w-8 shrink-0 items-center justify-center
-                    rounded-lg bg-[#271460]/60
+                    group
+
+                    flex
+                    items-center
+
+                    gap-6
+
+                    rounded-[30px]
+
+                    px-4
+                    py-4
+
+                    transition-all
+
+                    hover:bg-ecclesia-600
                   "
                 >
-                  <Icon size={16} className="text-[#9D7BFF]" />
-                </div>
-                <span className="text-base font-medium">{item.label}</span>
-                {item.badge && (
-                  <span
+
+                  <div
                     className="
-                      ml-auto rounded-full
-                      bg-[#FFD700]/15 border border-[#FFD700]/25
-                      px-2 py-0.5
-                      text-[9px] font-bold text-[#FFD700] uppercase tracking-wider
+                      flex
+
+                      h-16
+                      w-16
+
+                      shrink-0
+
+                      items-center
+                      justify-center
+
+                      rounded-[22px]
+
+                      bg-ecclesia-50/55
+
+                      text-ecclesia-600
+
+                      transition-all
+
+                      group-hover:bg-white/10
+                      group-hover:text-white
                     "
                   >
-                    {item.badge}
-                  </span>
-                )}
-              </a>
-            );
-          })
-        )}
+                    <Icon size={28} />
+                  </div>
 
-        {/* Logout */}
-        <button
-          onClick={() => {/* logout real aqui */}}
-          className="
-            flex items-center gap-3
-            rounded-xl
-            px-4 py-4 mt-2
-            text-[#f87171]
-            transition-all duration-200
-            hover:bg-red-500/10
-            w-full
-          "
-        >
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/10">
-            <logoutItem.icon size={16} className="text-[#f87171]" />
-          </div>
-          <span className="text-base font-medium">{logoutItem.label}</span>
-        </button>
+                  <div className="flex-1">
+
+                    <p
+                      className="
+                        font-navbar
+
+                        text-xl
+                        font-bold
+
+                        text-black
+
+                        group-hover:text-white
+                      "
+                    >
+                      {item.label}
+                    </p>
+
+                    {item.badge && (
+                      <p
+                        className="
+                          mt-1
+
+                          text-sm
+
+                          text-ecclesia-500
+
+                          group-hover:text-white/80
+                        "
+                      >
+                        {item.badge}
+                      </p>
+                    )}
+
+                  </div>
+
+                  <ChevronRight
+                    size={22}
+                    className="
+                      text-gray-300
+
+                      group-hover:text-white
+                    "
+                  />
+
+                </a>
+              );
+            })
+          )}
+
+          {/* LOGOUT */}
+
+          <button
+            className="
+              group
+
+              mt-4
+
+              flex
+              w-full
+
+              items-center
+
+              gap-6
+
+              rounded-[30px]
+
+              px-4
+              py-4
+
+              transition-all
+
+              hover:bg-red-500
+            "
+          >
+
+            <div
+              className="
+                flex
+
+                h-16
+                w-16
+
+                items-center
+                justify-center
+
+                rounded-[22px]
+
+                bg-red-50
+
+                text-red-500
+
+                group-hover:bg-white/10
+                group-hover:text-white
+              "
+            >
+              <logoutItem.icon size={28} />
+            </div>
+
+            <span
+              className="
+                flex-1
+
+                text-left
+
+                font-navbar
+                text-xl
+                font-bold
+
+                text-red-500
+
+                group-hover:text-white
+              "
+            >
+              {logoutItem.label}
+            </span>
+
+            <ChevronRight
+              size={22}
+              className="
+                text-red-300
+
+                group-hover:text-white
+              "
+            />
+
+          </button>
+
+        </div>
+
       </div>
+
     </div>
   );
 }
