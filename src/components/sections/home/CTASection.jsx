@@ -1,41 +1,56 @@
-import { ArrowRight } from 'lucide-react'
+// home/CTASection.jsx - Chamada final
+import { ArrowRight, Sparkles } from 'lucide-react'
 
 export default function CTASection() {
   return (
-    <section className="bg-ecclesia-800 py-20 px-6 relative overflow-hidden">
-      {/* Church illustration */}
-      <div className="absolute left-0 top-0 bottom-0 flex items-center pl-10 pointer-events-none">
-        <svg viewBox="0 0 200 220" fill="none" className="w-48 h-auto opacity-20">
-          <rect x="55" y="110" width="90" height="90" stroke="white" strokeWidth="2"/>
-          <polygon points="100,30 40,110 160,110" stroke="white" strokeWidth="2" fill="none"/>
-          <line x1="100" y1="30" x2="100" y2="10" stroke="white" strokeWidth="2.5"/>
-          <line x1="88" y1="20" x2="112" y2="20" stroke="white" strokeWidth="2.5"/>
-          <rect x="75" y="150" width="50" height="50" stroke="white" strokeWidth="1.5" fill="none"/>
-          <rect x="60" y="125" width="25" height="30" stroke="white" strokeWidth="1.5" fill="none"/>
-          <rect x="115" y="125" width="25" height="30" stroke="white" strokeWidth="1.5" fill="none"/>
-          <ellipse cx="55" cy="195" rx="25" ry="20" stroke="white" strokeWidth="1" fill="none"/>
-          <ellipse cx="145" cy="195" rx="25" ry="20" stroke="white" strokeWidth="1" fill="none"/>
-        </svg>
-      </div>
+    <section className="py-24 px-6 relative overflow-hidden">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0A0F14] via-[#0D1915] to-[#0A0F14]" />
 
-      <div className="max-w-7xl mx-auto relative">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
-          <div className="text-center lg:text-left max-w-xl">
-            <h2 className="text-2xl lg:text-3xl font-extrabold text-white mb-3 leading-snug">
-              Pronto para transformar a gestão da sua igreja?
-            </h2>
-            <p className="text-white/60 text-sm leading-relaxed">
-              Agende uma demonstração gratuita e veja como o Ecclesia pode ajudar sua igreja a crescer com propósito e excelência.
-            </p>
-          </div>
+      {/* Glow effects */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#2A8A61] rounded-full blur-[180px] opacity-[0.12]" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#D4AF37] rounded-full blur-[180px] opacity-[0.05]" />
+
+      {/* Content */}
+      <div className="relative z-10 max-w-4xl mx-auto text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#2A8A61]/10 border border-[#2A8A61]/20 mb-8">
+          <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+          <span className="text-xs font-bold text-[#2A8A61] uppercase tracking-wider">
+            Oferta especial
+          </span>
+        </div>
+
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+          Sua missão é servir.{' '}
+          <span className="bg-gradient-to-r from-[#2A8A61] to-[#D4AF37] bg-clip-text text-transparent">
+            A gestão é com a gente.
+          </span>
+        </h2>
+
+        <p className="text-lg text-white/50 max-w-2xl mx-auto mb-10">
+          Junte-se a milhares de líderes que já simplificaram a administração da sua igreja.
+          Comece grátis, sem compromisso.
+        </p>
+
+        <div className="flex flex-wrap justify-center gap-4">
           <a
             href="#"
-            className="shrink-0 inline-flex items-center gap-2 bg-white text-ecclesia-800 hover:bg-ecclesia-50 font-bold px-8 py-4 rounded-xl transition-all hover:shadow-xl active:scale-95 text-sm"
+            className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-[#2A8A61] to-[#1E6B4B] text-white font-bold text-lg shadow-xl shadow-[#2A8A61]/30 hover:shadow-2xl hover:scale-105 transition-all duration-300"
           >
-            Agendar demonstração
-            <ArrowRight size={16} />
+            Começar agora — é grátis
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </a>
+          <a
+            href="#"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-xl border-2 border-white/20 text-white font-bold text-lg hover:bg-white/5 hover:border-white/30 transition-all duration-300"
+          >
+            Ver demonstração
           </a>
         </div>
+
+        <p className="text-white/25 text-sm mt-6">
+          ✓ Sem cartão de crédito · ✓ Cancele quando quiser · ✓ Suporte incluso
+        </p>
       </div>
     </section>
   )

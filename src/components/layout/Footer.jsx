@@ -1,7 +1,6 @@
-import { Facebook, Youtube, MessageCircle, ArrowRight, Mail } from "lucide-react";
+import { ArrowRight, Facebook, Youtube, MessageCircle } from "lucide-react";
 import Logo from "../ui/logo/Logo";
 
-// LinkedIn inline (sem dependência de versão do lucide)
 const LinkedinIcon = ({ size = 16, ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -21,192 +20,188 @@ const LinkedinIcon = ({ size = 16, ...props }) => (
   </svg>
 );
 
-const links = {
-  Produto: ["Recursos", "Planos", "Integrações", "Atualizações", "Roadmap"],
-  Empresa: ["Sobre", "Blog", "Contato", "Trabalhe conosco"],
-  Suporte: ["Central de ajuda", "Tutoriais", "Status do sistema", "Documentação"],
-};
-
 const socials = [
-  { title: "Facebook",  icon: Facebook     },
-  { title: "LinkedIn",  icon: LinkedinIcon },
-  { title: "YouTube",   icon: Youtube      },
-  { title: "WhatsApp",  icon: MessageCircle },
+  { title: "Facebook",  icon: Facebook,      href: "#" },
+  { title: "LinkedIn",  icon: LinkedinIcon,  href: "#" },
+  { title: "YouTube",   icon: Youtube,       href: "#" },
+  { title: "WhatsApp",  icon: MessageCircle, href: "#" },
+];
+
+const cols = [
+  {
+    title: "Produto",
+    links: ["Recursos", "Planos", "Integrações", "Atualizações", "Roadmap", "API"],
+  },
+  {
+    title: "Empresa",
+    links: ["Sobre nós", "Blog", "Cases de sucesso", "Trabalhe conosco", "Contato", "Imprensa"],
+  },
+  {
+    title: "Suporte",
+    links: ["Central de ajuda", "Tutoriais em vídeo", "Documentação", "Status do sistema", "Comunidade", "Solicitar demo"],
+  },
 ];
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-ecclesia-950">
-
-      {/* ── Divider com glow dourado — eco do header ── */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-500/40 to-transparent" />
-
-      {/* Glow ambiental roxo — sutil, vindo de baixo */}
+    <footer
+      className="relative overflow-hidden"
+      style={{ background: "var(--gradient-hero)" }}
+    >
+      {/* ── Mesma grade de pontos do Hero ─────────────────────────── */}
       <div
-        className="pointer-events-none absolute bottom-0 left-1/2 h-[500px] w-[900px] -translate-x-1/2 translate-y-1/3 rounded-full bg-ecclesia-700/15 blur-[140px]"
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)
+          `,
+          backgroundSize: "60px 60px",
+        }}
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-7xl px-6">
+      {/* ── Glow orbs — mesma lógica do Hero ─────────────────────── */}
+      <div className="pointer-events-none absolute right-1/4 top-0 h-[500px] w-[500px] rounded-full bg-ecclesia-500 opacity-[0.10] blur-[130px]" aria-hidden />
+      <div className="pointer-events-none absolute left-0 bottom-0 h-[400px] w-[400px] rounded-full bg-ecclesia-700 opacity-[0.13] blur-[110px]" aria-hidden />
 
-        {/* ═══════════════════════════════════════════
-            BRAND + LINKS + NEWSLETTER
-        ════════════════════════════════════════════ */}
-        <div className="grid gap-12 pt-16 pb-14 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1.3fr]">
+      {/* ── Divisor de entrada — eco do header ────────────────────── */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#E0B14A]/40 to-transparent" />
 
-          {/* MARCA */}
-          <div>
-            {/* Logo idêntico ao cabeçalho */}
-            <a href="/" className="inline-block mb-6 transition-opacity hover:opacity-80">
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+
+        {/* ════════════════════════════════════════════════════════════
+            CORPO PRINCIPAL
+        ═════════════════════════════════════════════════════════════ */}
+        <div className="grid gap-16 py-24 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+
+          {/* ── COLUNA DA MARCA ──────────────────────────────────── */}
+          <div className="flex flex-col gap-8">
+
+            {/* Logo — idêntico ao header */}
+            <a href="/" className="inline-block w-fit transition-opacity hover:opacity-80">
               <Logo />
             </a>
 
-            <p className="text-sm leading-relaxed text-white/35 mb-8 max-w-[220px]">
-              Sistema moderno para igrejas que buscam
-              excelência na gestão e mais tempo para servir.
+            {/* Tagline no mesmo espírito da headline do Hero */}
+            <p
+              className="text-lg leading-relaxed text-white/50 max-w-[300px]"
+              style={{ fontFamily: "var(--font-navbar)" }}
+            >
+              Sistema completo de gestão para igrejas que desejam
+              excelência e mais tempo para servir.
             </p>
 
-            {/* Redes sociais */}
-            <div className="flex gap-2 mb-8">
-              {socials.map(({ title, icon: Icon }) => (
+            {/* Redes — hover dourado, igual ao header */}
+            <div className="flex gap-3">
+              {socials.map(({ title, icon: Icon, href }) => (
                 <a
                   key={title}
-                  href="#"
+                  href={href}
                   title={title}
                   className="
-                    h-9 w-9 rounded-lg
-                    border border-white/8
-                    bg-white/[0.03]
-                    flex items-center justify-center
-                    text-white/35
-                    hover:border-gold-500/30
-                    hover:bg-gold-500/10
-                    hover:text-gold-400
-                    transition-all duration-200
+                    flex h-11 w-11 items-center justify-center
+                    rounded-xl border border-white/10 bg-white/[0.04]
+                    text-white/40
+                    transition-all duration-300
+                    hover:border-[#E0B14A]/30
+                    hover:bg-[#E0B14A]/8
+                    hover:text-[#E0B14A]
                   "
                 >
-                  <Icon size={15} />
+                  <Icon size={17} />
                 </a>
               ))}
             </div>
 
-            {/* Versículo — âncora de identidade */}
-            <blockquote
-              className="
-                border-l-2 border-ecclesia-500/40
-                pl-4
-                text-xs italic text-white/25
-                leading-relaxed
-              "
-            >
-              "E tudo que fizerdes, fazei-o de todo o coração,
-              como para o Senhor."
-              <br />
-              <cite className="not-italic text-white/20">— Cl 3:23</cite>
+            {/* Versículo — âncora de identidade, mesmo tom sutil do Hero */}
+            <blockquote className="border-l-2 border-[#E0B14A]/25 pl-5 max-w-[260px]">
+              <p
+                className="text-sm italic leading-relaxed text-white/25"
+                style={{ fontFamily: "var(--font-navbar)" }}
+              >
+                "E tudo que fizerdes, fazei-o de todo o coração,
+                como para o Senhor."
+              </p>
+              <cite className="mt-2 block not-italic text-xs text-white/15">
+                — Colossenses 3:23
+              </cite>
             </blockquote>
+
           </div>
 
-          {/* LINKS */}
-          {Object.entries(links).map(([group, items]) => (
-            <div key={group}>
+          {/* ── 3 COLUNAS DE LINKS ──────────────────────────────── */}
+          {cols.map(({ title, links }) => (
+            <div key={title} className="flex flex-col gap-7">
+
               <h4
-                className="mb-5 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/50"
+                className="text-xs font-semibold uppercase tracking-[0.22em] text-white/40"
                 style={{ fontFamily: "var(--font-ecclesia)" }}
               >
-                {group}
+                {title}
               </h4>
 
-              <ul className="space-y-3">
-                {items.map((item) => (
-                  <li key={item}>
+              <ul className="flex flex-col gap-4">
+                {links.map((label) => (
+                  <li key={label}>
                     <a
                       href="#"
-                      className="text-sm text-white/30 hover:text-white/80 transition-colors duration-150"
+                      className="
+                        relative text-base text-white/35
+                        font-navbar
+                        transition-colors duration-300
+                        hover:text-white/80
+                        after:absolute after:-bottom-0.5 after:left-0
+                        after:h-px after:w-0 after:bg-[#E0B14A]
+                        after:transition-all after:duration-300
+                        hover:after:w-full
+                      "
+                      style={{ fontFamily: "var(--font-navbar)" }}
                     >
-                      {item}
+                      {label}
                     </a>
                   </li>
                 ))}
               </ul>
+
             </div>
           ))}
 
-          {/* NEWSLETTER */}
-          <div>
-            <h4
-              className="mb-5 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/50"
-              style={{ fontFamily: "var(--font-ecclesia)" }}
-            >
-              Newsletter
-            </h4>
-
-            <p className="mb-5 text-sm text-white/30 leading-relaxed">
-              Novidades, atualizações e conteúdo para líderes.
-            </p>
-
-            <div className="space-y-2.5">
-              <div className="relative">
-                <Mail
-                  size={14}
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/20"
-                />
-                <input
-                  type="email"
-                  placeholder="Seu e-mail"
-                  className="
-                    w-full rounded-xl
-                    border border-white/8
-                    bg-white/[0.03]
-                    pl-9 pr-4 py-3
-                    text-sm text-white
-                    placeholder:text-white/20
-                    outline-none
-                    focus:border-ecclesia-500/60
-                    focus:bg-ecclesia-900/40
-                    transition-all duration-200
-                  "
-                />
-              </div>
-
-              <button
-                className="
-                  w-full flex items-center justify-center gap-2
-                  rounded-xl
-                  bg-ecclesia-700 hover:bg-ecclesia-600
-                  border border-ecclesia-500/20
-                  py-3
-                  text-sm font-semibold text-white
-                  transition-all duration-200
-                "
-              >
-                Inscrever-se
-                <ArrowRight size={14} />
-              </button>
-            </div>
-          </div>
         </div>
 
-        {/* ═══════════════════════════════════════════
+        {/* ════════════════════════════════════════════════════════════
             BOTTOM BAR
-        ════════════════════════════════════════════ */}
-        <div className="border-t border-white/[0.06] py-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
-          <span className="text-xs text-white/20">
+        ═════════════════════════════════════════════════════════════ */}
+        <div
+          className="
+            border-t border-white/[0.06]
+            py-9
+            flex flex-col gap-4
+            sm:flex-row sm:items-center sm:justify-between
+          "
+        >
+          <span className="text-sm text-white/20">
             © 2026 Ecclesia · Todos os direitos reservados
           </span>
 
-          <nav className="flex flex-wrap gap-5">
-            {["Privacidade", "Termos de uso", "Cookies"].map((item) => (
+          <nav className="flex flex-wrap gap-7">
+            {["Política de Privacidade", "Termos de Uso", "Cookies"].map((item) => (
               <a
                 key={item}
                 href="#"
-                className="text-xs text-white/20 hover:text-white/50 transition-colors duration-150"
+                className="
+                  relative text-sm text-white/20
+                  transition-colors duration-300 hover:text-white/50
+                  after:absolute after:-bottom-0.5 after:left-0
+                  after:h-px after:w-0 after:bg-[#E0B14A]/50
+                  after:transition-all after:duration-300
+                  hover:after:w-full
+                "
               >
                 {item}
               </a>
             ))}
           </nav>
-
         </div>
 
       </div>
