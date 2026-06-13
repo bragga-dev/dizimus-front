@@ -4,20 +4,38 @@ import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react'
 import Header from '@/components/layout/header/Header'
 import Footer from '@/components/layout/Footer'
 import capaImg from '@/assets/capaIMG.avif'
+import { login } from '@/services/api/auth'
+import { useAuth } from '@/context/AuthContext'
+import { parseApiError } from '@/hooks/useApiError'
 
 export default function Login() {
   const navigate = useNavigate()
+  const { saveSession } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
   const [formData, setFormData] = useState({ email: '', password: '' })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => 
+  {
     e.preventDefault()
+    setError('')
     setIsLoading(true)
-    setTimeout(() => {
-      setIsLoading(false)
+
+    try 
+    {
+      const data = await login({ email: formData.email, password: formData.password })
+      saveSession(data)
       navigate('/dashboard')
-    }, 1500)
+    }
+    catch (err) 
+    {
+      setError(parseApiError(err))
+    } 
+    finally 
+    {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -96,6 +114,13 @@ export default function Login() {
               </p>
             </div>
 
+            {/* Erro da API */}
+            {error && (
+              <div className="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm whitespace-pre-line">
+                {error}
+              </div>
+            )}
+
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
 
@@ -110,10 +135,7 @@ export default function Login() {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full rounded-xl border pl-11 pr-4 py-3 text-sm text-white placeholder-white/25 focus:outline-none transition-colors"
-                    style={{
-                      background: 'rgba(255,255,255,0.04)',
-                      borderColor: 'rgba(255,255,255,0.09)',
-                    }}
+                    style={{ background: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.09)' }}
                     onFocus={e => e.currentTarget.style.borderColor = '#315C4B'}
                     onBlur={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)'}
                     placeholder="seu@email.com"
@@ -141,10 +163,7 @@ export default function Login() {
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className="w-full rounded-xl border pl-11 pr-11 py-3 text-sm text-white placeholder-white/25 focus:outline-none transition-colors"
-                    style={{
-                      background: 'rgba(255,255,255,0.04)',
-                      borderColor: 'rgba(255,255,255,0.09)',
-                    }}
+                    style={{ background: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.09)' }}
                     onFocus={e => e.currentTarget.style.borderColor = '#315C4B'}
                     onBlur={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)'}
                     placeholder="••••••••"
