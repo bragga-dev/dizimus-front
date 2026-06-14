@@ -6,7 +6,7 @@ import Header from '@/components/layout/header/Header'
 import Footer from '@/components/layout/Footer'
 import capaImg from '@/assets/capaIMG.avif'
 import { register } from '@/services/api/auth'
-import { useAuth } from '@/context/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
 import { parseApiError } from '@/hooks/useApiError'
 
 export default function RegisterChurch() {
@@ -20,7 +20,7 @@ export default function RegisterChurch() {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'Igreja',
+    role: 'church',
   })
 
   const update = (field, value) => setFormData(prev => ({ ...prev, [field]: value }))
@@ -44,9 +44,10 @@ export default function RegisterChurch() {
         email: formData.email,
         password: formData.password,
         role: formData.role,
+        password2: formData.confirmPassword,
       })
       saveSession(data)
-      navigate('/dashboard')
+      navigate('/')
     } catch (err) {
       setError(parseApiError(err))
     } finally {

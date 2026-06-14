@@ -1,14 +1,13 @@
 // src/context/AuthContext.jsx
-import { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { createContext, useState, useEffect, useCallback } from 'react'
 import { getMe, logout as logoutService } from '@/services/api/auth'
 
-const AuthContext = createContext(null)
+export const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true) // true enquanto verifica sessão inicial
+  const [loading, setLoading] = useState(true)
 
-  // Ao montar, tenta recuperar o usuário logado pelo token salvo
   useEffect(() => {
     const token = localStorage.getItem('access_token')
     if (!token) {
@@ -24,10 +23,6 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false))
   }, [])
 
-  /**
-   * Salva os tokens e o usuário após login/register bem-sucedido.
-   * Chame com o retorno da API: { access, refresh, user }
-   */
   const saveSession = useCallback(({ access, refresh, user: userData }) => {
     localStorage.setItem('access_token', access)
     localStorage.setItem('refresh_token', refresh)
@@ -52,11 +47,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   )
-}
-
-// eslint-disable-next-line react-refresh/only-export-components
-export function useAuth() {
-  const ctx = useContext(AuthContext)
-  if (!ctx) throw new Error('useAuth deve ser usado dentro de <AuthProvider>')
-  return ctx
 }

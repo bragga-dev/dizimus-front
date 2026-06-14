@@ -6,7 +6,7 @@ import Header from '@/components/layout/header/Header'
 import Footer from '@/components/layout/Footer'
 import capaImg from '@/assets/capaIMG.avif'
 import { register } from '@/services/api/auth'
-import { useAuth } from '@/context/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
 import { parseApiError } from '@/hooks/useApiError'
 
 export default function RegisterMember() {
@@ -20,7 +20,7 @@ export default function RegisterMember() {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'Membro',
+    role: 'member',
   })
 
   const update = (field, value) => setFormData(prev => ({ ...prev, [field]: value }))
@@ -44,6 +44,7 @@ export default function RegisterMember() {
         email: formData.email,
         password: formData.password,
         role: formData.role,
+        password2: formData.confirmPassword,
       })
       saveSession(data)
       navigate('/dashboard')
@@ -112,10 +113,11 @@ export default function RegisterMember() {
 
             {/* Erro da API */}
             {error && (
-              <div className="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm whitespace-pre-line">
-                {error}
-              </div>
-            )}
+  <div className="...">
+    {typeof error === 'string' ? error : JSON.stringify(error)}
+  </div>
+)}
+
 
             <form onSubmit={handleSubmit} className="space-y-4">
 

@@ -5,7 +5,7 @@ import Header from '@/components/layout/header/Header'
 import Footer from '@/components/layout/Footer'
 import capaImg from '@/assets/capaIMG.avif'
 import { login } from '@/services/api/auth'
-import { useAuth } from '@/context/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
 import { parseApiError } from '@/hooks/useApiError'
 
 export default function Login() {
@@ -16,24 +16,18 @@ export default function Login() {
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({ email: '', password: '' })
 
-  const handleSubmit = async (e) => 
-  {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setIsLoading(true)
 
-    try 
-    {
+    try {
       const data = await login({ email: formData.email, password: formData.password })
       saveSession(data)
       navigate('/dashboard')
-    }
-    catch (err) 
-    {
+    } catch (err) {
       setError(parseApiError(err))
-    } 
-    finally 
-    {
+    } finally {
       setIsLoading(false)
     }
   }

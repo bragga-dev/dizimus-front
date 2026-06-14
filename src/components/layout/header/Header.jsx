@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-
 import HeaderActions from "./HeaderActions";
 import HeaderLogo from "./HeaderLogo";
 import HeaderNav from "./HeaderNav";
 import HeaderSearch from "./HeaderSearch";
 import MobileMenu from "./MobileMenu";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  // Troque por seu contexto/hook de autenticação real
-  const isAuthenticated = true;
+  const { user } = useAuth();
+  const isAuthenticated = !!user;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -39,14 +38,7 @@ export default function Header() {
           }
         `}
       >
-        <div
-          className="
-            mx-auto
-            flex h-20 max-w-7xl
-            items-center justify-between
-            px-6
-          "
-        >
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
           {/* LEFT */}
           <div className="flex items-center gap-14">
             <HeaderLogo />
@@ -56,7 +48,7 @@ export default function Header() {
           {/* RIGHT — desktop */}
           <div className="hidden items-center gap-3 lg:flex">
             <HeaderSearch />
-            <HeaderActions isAuthenticated={isAuthenticated} />
+            <HeaderActions isAuthenticated={isAuthenticated} user={user} />
           </div>
 
           {/* MOBILE HAMBURGER */}
@@ -80,11 +72,11 @@ export default function Header() {
         </div>
       </header>
 
-      {/* MOBILE MENU — drawer via portal */}
       <MobileMenu
         isOpen={mobileOpen}
         onClose={() => setMobileOpen(false)}
         isAuthenticated={isAuthenticated}
+        user={user}
       />
     </>
   );

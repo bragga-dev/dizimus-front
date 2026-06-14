@@ -17,9 +17,9 @@ export async function login({ email, password })
  * Payload: { email, password, role }
  *   role: "Igreja" | "Membro"
  */
-export async function register({ email, password, role }) 
+export async function register({ email, password, password2, role }) 
 {
-  const { data } = await api.post('/auth/register', { email, password, role })
+  const { data } = await api.post('/auth/register', { email, password, password2, role })
   return data
 }
 
