@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Mail, Lock, Eye, EyeOff, ArrowRight, MailCheck } from 'lucide-react'
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react'
 import Header from '@/components/layout/header/Header'
 import Footer from '@/components/layout/Footer'
 import capaImg from '@/assets/capaIMG.avif'
-import { login, resendVerification } from '@/services/api/auth'
+import { login } from '@/services/api/auth'
 import { useAuth } from '@/hooks/useAuth'
 import { parseApiError, API_ERROR_CODES } from '@/hooks/useApiError'
 
@@ -13,17 +13,12 @@ export default function Login() {
   const { saveSession } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [isResending, setIsResending] = useState(false)
   const [error, setError] = useState('')
-  const [errorCode, setErrorCode] = useState(null)
-  const [resendSuccess, setResendSuccess] = useState(false)
   const [formData, setFormData] = useState({ email: '', password: '' })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-    setErrorCode(null)
-    setResendSuccess(false)
     setIsLoading(true)
 
     try {
@@ -32,28 +27,18 @@ export default function Login() {
       navigate('/dashboard')
     } catch (err) {
       const { message, code } = parseApiError(err)
+
+      if (code === API_ERROR_CODES.EMAIL_NOT_VERIFIED) {
+        // Redireciona para página de aviso passando o email
+        navigate('/verificar-email', { state: { email: formData.email } })
+        return
+      }
+
       setError(message)
-      setErrorCode(code)
     } finally {
       setIsLoading(false)
     }
   }
-
-  const handleResend = async () => {
-    setIsResending(true)
-    setResendSuccess(false)
-    try {
-      await resendVerification(formData.email)
-      setResendSuccess(true)
-    } catch (err) {
-      const { message } = parseApiError(err)
-      setError(message)
-    } finally {
-      setIsResending(false)
-    }
-  }
-
-  const isEmailNotVerified = errorCode === API_ERROR_CODES.EMAIL_NOT_VERIFIED
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#0D1815' }}>
@@ -103,39 +88,7 @@ export default function Login() {
               <p className="text-white/45 text-sm">Entre com sua conta para acessar o painel.</p>
             </div>
 
-            {/* Banner de erro — email não confirmado */}
-            {isEmailNotVerified && !resendSuccess && (
-              <div className="mb-4 px-4 py-4 rounded-xl bg-amber-500/10 border border-amber-500/25 space-y-3">
-                <div className="flex items-start gap-3">
-                  <MailCheck className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-amber-300 text-sm font-semibold">Confirme seu e-mail</p>
-                    <p className="text-amber-400/70 text-xs mt-0.5">{error}</p>
-                  </div>
-                </div>
-                <button
-                  onClick={handleResend}
-                  disabled={isResending}
-                  className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-semibold hover:bg-amber-500/30 transition-colors disabled:opacity-60"
-                >
-                  {isResending
-                    ? <div className="w-3.5 h-3.5 border-2 border-amber-300/30 border-t-amber-300 rounded-full animate-spin" />
-                    : 'Reenviar e-mail de confirmação'
-                  }
-                </button>
-              </div>
-            )}
-
-            {/* Sucesso no reenvio */}
-            {resendSuccess && (
-              <div className="mb-4 px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center gap-3">
-                <MailCheck className="w-4 h-4 text-green-400 shrink-0" />
-                <p className="text-green-400 text-sm">E-mail de confirmação reenviado! Verifique sua caixa de entrada.</p>
-              </div>
-            )}
-
-            {/* Banner de erro genérico */}
-            {error && !isEmailNotVerified && (
+            {error && (
               <div className="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm whitespace-pre-line">
                 {error}
               </div>

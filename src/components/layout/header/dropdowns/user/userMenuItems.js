@@ -40,7 +40,6 @@ export const userMenuItems = [
         href: "/assinatura",
         icon: CreditCard,
         description: "Plano e pagamentos",
-        badge: "Pro",
       },
       {
         label: "Configurações",

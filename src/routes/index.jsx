@@ -6,19 +6,18 @@ import Login from '@/pages/Login'
 import RegisterChoice from '@/pages/Register/RegisterChoice'
 import RegisterChurch from '@/pages/Register/RegisterChurch'
 import RegisterMember from '@/pages/Register/RegisterMember'
+import EmailNaoVerificado from '@/pages/EmailNaoVerificado'
 import Contact from '@/pages/Contact'
 import Pricing from '@/pages/Pricing'
 import About from '@/pages/About'
 import MainLayout from '@/components/layout/MainLayout'
 
-// Redireciona para /login se não estiver autenticado
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
   if (loading) return null
   return user ? children : <Navigate to="/login" replace />
 }
 
-// Redireciona para /dashboard se já estiver logado
 function PublicOnlyRoute({ children }) {
   const { user, loading } = useAuth()
   if (loading) return null
@@ -29,7 +28,7 @@ export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Rotas públicas com layout principal (Header + Footer) */}
+        {/* Rotas públicas com layout */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/contato" element={<Contact />} />
@@ -37,13 +36,16 @@ export default function AppRoutes() {
           <Route path="/sobre" element={<About />} />
         </Route>
 
-        {/* Autenticação — bloqueadas para quem já está logado */}
+        {/* Autenticação */}
         <Route path="/login" element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
         <Route path="/cadastro" element={<PublicOnlyRoute><RegisterChoice /></PublicOnlyRoute>} />
         <Route path="/cadastro/igreja" element={<PublicOnlyRoute><RegisterChurch /></PublicOnlyRoute>} />
         <Route path="/cadastro/membro" element={<PublicOnlyRoute><RegisterMember /></PublicOnlyRoute>} />
 
-        {/* Rotas privadas — só acessíveis com login */}
+        {/* Página de aviso — email não verificado (pública, sem guard) */}
+        <Route path="/verificar-email" element={<EmailNaoVerificado />} />
+
+        {/* Rotas privadas */}
         {/* <Route path="/dashboard/*" element={<PrivateRoute><Dashboard /></PrivateRoute>} /> */}
       </Routes>
     </BrowserRouter>

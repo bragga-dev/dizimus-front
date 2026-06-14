@@ -1,19 +1,20 @@
 // src/hooks/useApiError.js
 
-/**
- * Códigos de erro especiais retornados pela API Ecclesia.
- * Usados para identificar situações que precisam de tratamento especial na UI.
- */
 export const API_ERROR_CODES = {
   EMAIL_NOT_VERIFIED: 'email_not_verified',
 }
 
-/**
- * Extrai uma mensagem legível e um código opcional de erros do Django Ninja.
- * Retorna: { message: string, code: string | null }
- */
 export function parseApiError(error) {
+  const status = error?.response?.status
   const data = error?.response?.data
+
+  // 403 = email não verificado (independente da mensagem)
+  if (status === 403) {
+    return {
+      message: data?.detail ?? 'E-mail não verificado.',
+      code: API_ERROR_CODES.EMAIL_NOT_VERIFIED,
+    }
+  }
 
   if (!data) {
     return {
@@ -22,12 +23,8 @@ export function parseApiError(error) {
     }
   }
 
-  // Erro simples com detail (ex: { detail: "...", code: "email_not_verified" })
   if (data.detail) {
-    return {
-      message: data.detail,
-      code: data.code ?? null,
-    }
+    return { message: data.detail, code: data.code ?? null }
   }
 
   if (data.non_field_errors) {
@@ -39,11 +36,8 @@ export function parseApiError(error) {
     }
   }
 
-  if (typeof data === 'string') {
-    return { message: data, code: null }
-  }
+  if (typeof data === 'string') return { message: data, code: null }
 
-  // Erros de campos (ex: { email: ["já existe"], password: ["muito curto"] })
   const messages = Object.entries(data)
     .map(([field, msgs]) => {
       const label =

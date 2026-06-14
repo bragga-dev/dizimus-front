@@ -22,6 +22,6 @@ export async function logout(refreshToken) {
 }
 
 export async function resendVerification(email) {
-  const { data } = await api.post('/users/resend-verification', { email })
+  const { data } = await api.post(`/users/resend-verification?email=${encodeURIComponent(email)}`)
   return data
 }
