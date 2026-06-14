@@ -6,7 +6,7 @@ import Login from '@/pages/Login'
 import RegisterChoice from '@/pages/Register/RegisterChoice'
 import RegisterChurch from '@/pages/Register/RegisterChurch'
 import RegisterMember from '@/pages/Register/RegisterMember'
-import EmailNaoVerificado from '@/pages/EmailNaoVerificado'
+import EmailNotVerificado from '@/pages/EmailNotVerificado'
 import Contact from '@/pages/Contact'
 import Pricing from '@/pages/Pricing'
 import About from '@/pages/About'
@@ -43,7 +43,7 @@ export default function AppRoutes() {
         <Route path="/cadastro/membro" element={<PublicOnlyRoute><RegisterMember /></PublicOnlyRoute>} />
 
         {/* Página de aviso — email não verificado (pública, sem guard) */}
-        <Route path="/verificar-email" element={<EmailNaoVerificado />} />
+        <Route path="/verificar-email" element={<EmailNotVerificado />} />
 
         {/* Rotas privadas */}
         {/* <Route path="/dashboard/*" element={<PrivateRoute><Dashboard /></PrivateRoute>} /> */}

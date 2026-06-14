@@ -1,4 +1,4 @@
-// src/pages/EmailNaoVerificado.jsx
+// src/pages/EmailNotVerificado.jsx
 
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -10,7 +10,7 @@ import { parseApiError } from '@/hooks/useApiError'
 import Header from '@/components/layout/header/Header'
 import Footer from '@/components/layout/Footer'
 
-export default function EmailNaoVerificado() {
+export default function EmailNotVerificado() {
   const { state } = useLocation()
   const navigate = useNavigate()
 
