@@ -14,19 +14,33 @@ export function AuthProvider({ children }) {
       setLoading(false)
       return
     }
+    // Busca o perfil real do usuário via /users/me usando o token salvo
     getMe()
       .then(setUser)
       .catch(() => {
+        // Token inválido ou expirado — limpa sessão
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
       })
       .finally(() => setLoading(false))
   }, [])
 
-  const saveSession = useCallback(({ access, refresh, user: userData }) => {
+  /**
+   * Chamado após login ou registro bem-sucedido.
+   * O endpoint /auth/login retorna { access, refresh } sem objeto user,
+   * então buscamos o perfil completo logo em seguida via /users/me.
+   */
+  const saveSession = useCallback(async ({ access, refresh }) => {
     localStorage.setItem('access_token', access)
     localStorage.setItem('refresh_token', refresh)
-    setUser(userData)
+    try {
+      const userData = await getMe()
+      setUser(userData)
+    } catch {
+      // Se /users/me falhar, pelo menos os tokens estão salvos
+      // e o usuário não perde a sessão
+      setUser({ email: null })
+    }
   }, [])
 
   const logout = useCallback(async () => {

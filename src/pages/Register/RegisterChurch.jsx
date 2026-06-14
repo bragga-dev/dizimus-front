@@ -1,27 +1,28 @@
 // src/pages/Register/RegisterChurch.jsx
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Building2 } from 'lucide-react'
 import Header from '@/components/layout/header/Header'
 import Footer from '@/components/layout/Footer'
 import capaImg from '@/assets/capaIMG.avif'
 import { register } from '@/services/api/auth'
-import { useAuth } from '@/hooks/useAuth'
 import { parseApiError } from '@/hooks/useApiError'
+import RegisterSuccess from '@/components/auth/RegisterSuccess'
 
 export default function RegisterChurch() {
-  const navigate = useNavigate()
-  const { saveSession } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [registeredEmail, setRegisteredEmail] = useState(null)
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     confirmPassword: '',
     role: 'church',
   })
+
+  if (registeredEmail) return <RegisterSuccess email={registeredEmail} />
 
   const update = (field, value) => setFormData(prev => ({ ...prev, [field]: value }))
 
@@ -40,16 +41,16 @@ export default function RegisterChurch() {
 
     setIsLoading(true)
     try {
-      const data = await register({
+      await register({
         email: formData.email,
         password: formData.password,
         role: formData.role,
         password2: formData.confirmPassword,
       })
-      saveSession(data)
-      navigate('/')
+      setRegisteredEmail(formData.email)
     } catch (err) {
-      setError(parseApiError(err))
+      const { message } = parseApiError(err)
+      setError(message)
     } finally {
       setIsLoading(false)
     }
@@ -63,10 +64,7 @@ export default function RegisterChurch() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#0D1815' }}>
       <Header />
-
       <main className="flex-1 flex">
-
-        {/* Lado esquerdo — imagem */}
         <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
           <img src={capaImg} alt="Comunidade em adoração" className="absolute inset-0 w-full h-full object-cover object-center" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(8,18,14,0.75) 0%, rgba(13,25,21,0.55) 60%, rgba(8,18,14,0.85) 100%)' }} />
@@ -74,7 +72,7 @@ export default function RegisterChurch() {
             <div />
             <div>
               <blockquote className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4" style={{ fontFamily: 'var(--font-ecclesia)' }}>
-                "Cadastre sua igreja.{' '}
+                "Cadastre sua igreja.{" "}
                 <span style={{ background: 'linear-gradient(90deg, #6FB68A, #D7B36A)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   Comece a transformar."
                 </span>
@@ -94,10 +92,8 @@ export default function RegisterChurch() {
           </div>
         </div>
 
-        {/* Lado direito — formulário */}
         <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-16">
           <div className="w-full max-w-sm">
-
             <div className="mb-8">
               <div className="flex items-center gap-2 mb-4">
                 <Link to="/cadastro" className="text-white/40 hover:text-white/70 transition-colors text-sm">← Voltar</Link>
@@ -113,7 +109,6 @@ export default function RegisterChurch() {
               <p className="text-white/45 text-sm">Preencha os dados abaixo para criar sua conta</p>
             </div>
 
-            {/* Erro da API */}
             {error && (
               <div className="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm whitespace-pre-line">
                 {error}
@@ -121,7 +116,6 @@ export default function RegisterChurch() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
-
               <div>
                 <label className="block text-white/55 text-xs font-semibold uppercase tracking-wider mb-2">E-mail</label>
                 <div className="relative">
@@ -162,12 +156,10 @@ export default function RegisterChurch() {
                 </div>
               </div>
 
-              <input type="hidden" name="role" value={formData.role} />
-
               <p className="text-white/25 text-xs pt-2">
-                Ao criar a conta, você concorda com nossos{' '}
+                Ao criar a conta, você concorda com nossos{" "}
                 <Link to="/terms" className="text-[#6FB68A]/70 hover:text-[#6FB68A]">Termos</Link>
-                {' '}e{' '}
+                {" "}e{" "}
                 <Link to="/privacy" className="text-[#6FB68A]/70 hover:text-[#6FB68A]">Privacidade</Link>.
               </p>
 
@@ -179,19 +171,15 @@ export default function RegisterChurch() {
                   : <><span>Criar conta como Igreja</span><ArrowRight className="w-4 h-4" /></>
                 }
               </button>
-
             </form>
 
             <p className="text-center text-white/35 text-sm mt-8">
-              Já tem uma conta?{' '}
+              Já tem uma conta?{" "}
               <Link to="/login" className="text-[#6FB68A] hover:text-[#D7B36A] font-semibold transition-colors">Fazer login</Link>
             </p>
-
           </div>
         </div>
-
       </main>
-
       <Footer />
     </div>
   )

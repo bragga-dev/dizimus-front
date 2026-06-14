@@ -1,36 +1,59 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react'
+import { Mail, Lock, Eye, EyeOff, ArrowRight, MailCheck } from 'lucide-react'
 import Header from '@/components/layout/header/Header'
 import Footer from '@/components/layout/Footer'
 import capaImg from '@/assets/capaIMG.avif'
-import { login } from '@/services/api/auth'
+import { login, resendVerification } from '@/services/api/auth'
 import { useAuth } from '@/hooks/useAuth'
-import { parseApiError } from '@/hooks/useApiError'
+import { parseApiError, API_ERROR_CODES } from '@/hooks/useApiError'
 
 export default function Login() {
   const navigate = useNavigate()
   const { saveSession } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isResending, setIsResending] = useState(false)
   const [error, setError] = useState('')
+  const [errorCode, setErrorCode] = useState(null)
+  const [resendSuccess, setResendSuccess] = useState(false)
   const [formData, setFormData] = useState({ email: '', password: '' })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    setErrorCode(null)
+    setResendSuccess(false)
     setIsLoading(true)
 
     try {
       const data = await login({ email: formData.email, password: formData.password })
-      saveSession(data)
+      await saveSession(data)
       navigate('/dashboard')
     } catch (err) {
-      setError(parseApiError(err))
+      const { message, code } = parseApiError(err)
+      setError(message)
+      setErrorCode(code)
     } finally {
       setIsLoading(false)
     }
   }
+
+  const handleResend = async () => {
+    setIsResending(true)
+    setResendSuccess(false)
+    try {
+      await resendVerification(formData.email)
+      setResendSuccess(true)
+    } catch (err) {
+      const { message } = parseApiError(err)
+      setError(message)
+    } finally {
+      setIsResending(false)
+    }
+  }
+
+  const isEmailNotVerified = errorCode === API_ERROR_CODES.EMAIL_NOT_VERIFIED
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#0D1815' }}>
@@ -38,47 +61,25 @@ export default function Login() {
 
       <main className="flex-1 flex">
 
-        {/* ── Lado esquerdo — imagem + frase ── */}
+        {/* Lado esquerdo — imagem */}
         <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-          <img
-            src={capaImg}
-            alt="Comunidade em adoração"
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(135deg, rgba(8,18,14,0.75) 0%, rgba(13,25,21,0.55) 60%, rgba(8,18,14,0.85) 100%)',
-            }}
-          />
+          <img src={capaImg} alt="Comunidade em adoração" className="absolute inset-0 w-full h-full object-cover object-center" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(8,18,14,0.75) 0%, rgba(13,25,21,0.55) 60%, rgba(8,18,14,0.85) 100%)' }} />
           <div className="relative z-10 flex flex-col justify-between p-12 w-full">
             <div />
             <div>
-              <blockquote
-                className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4"
-                style={{ fontFamily: 'var(--font-ecclesia)' }}
-              >
+              <blockquote className="text-3xl xl:text-4xl font-black text-white leading-tight mb-4" style={{ fontFamily: 'var(--font-ecclesia)' }}>
                 "Organize a gestão.{' '}
-                <span style={{
-                  background: 'linear-gradient(90deg, #6FB68A, #D7B36A)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}>
+                <span style={{ background: 'linear-gradient(90deg, #6FB68A, #D7B36A)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   Libere o ministério."
                 </span>
               </blockquote>
-              <p className="text-white/50 text-sm">
-                Mais de 5.000 igrejas já confiam no Ecclesia.
-              </p>
+              <p className="text-white/50 text-sm">Mais de 5.000 igrejas já confiam no Ecclesia.</p>
             </div>
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2">
                 {['IE', 'MV', 'NA', 'CG'].map((init) => (
-                  <div
-                    key={init}
-                    className="w-8 h-8 rounded-full border-2 border-[#0D1815] bg-gradient-to-br from-[#315C4B] to-[#1E6B4B] flex items-center justify-center text-[9px] font-black text-[#D7B36A]"
-                    style={{ fontFamily: 'var(--font-ecclesia)' }}
-                  >
+                  <div key={init} className="w-8 h-8 rounded-full border-2 border-[#0D1815] bg-gradient-to-br from-[#315C4B] to-[#1E6B4B] flex items-center justify-center text-[9px] font-black text-[#D7B36A]" style={{ fontFamily: 'var(--font-ecclesia)' }}>
                     {init}
                   </div>
                 ))}
@@ -88,40 +89,62 @@ export default function Login() {
           </div>
         </div>
 
-        {/* ── Lado direito — formulário ── */}
+        {/* Lado direito — formulário */}
         <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-16">
           <div className="w-full max-w-sm">
 
-            {/* Título */}
             <div className="mb-8">
               <span className="inline-block px-3 py-1 rounded-full bg-[#82D39E]/10 border border-[#82D39E]/20 text-[#9BE8B5] text-[10px] font-bold uppercase tracking-[0.25em] mb-4">
                 Acesso à plataforma
               </span>
-              <h1
-                className="text-3xl font-black text-white mb-2"
-                style={{ fontFamily: 'var(--font-ecclesia)' }}
-              >
+              <h1 className="text-3xl font-black text-white mb-2" style={{ fontFamily: 'var(--font-ecclesia)' }}>
                 Bem-vindo de volta
               </h1>
-              <p className="text-white/45 text-sm">
-                Entre com sua conta para acessar o painel.
-              </p>
+              <p className="text-white/45 text-sm">Entre com sua conta para acessar o painel.</p>
             </div>
 
-            {/* Erro da API */}
-            {error && (
+            {/* Banner de erro — email não confirmado */}
+            {isEmailNotVerified && !resendSuccess && (
+              <div className="mb-4 px-4 py-4 rounded-xl bg-amber-500/10 border border-amber-500/25 space-y-3">
+                <div className="flex items-start gap-3">
+                  <MailCheck className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-amber-300 text-sm font-semibold">Confirme seu e-mail</p>
+                    <p className="text-amber-400/70 text-xs mt-0.5">{error}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleResend}
+                  disabled={isResending}
+                  className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-semibold hover:bg-amber-500/30 transition-colors disabled:opacity-60"
+                >
+                  {isResending
+                    ? <div className="w-3.5 h-3.5 border-2 border-amber-300/30 border-t-amber-300 rounded-full animate-spin" />
+                    : 'Reenviar e-mail de confirmação'
+                  }
+                </button>
+              </div>
+            )}
+
+            {/* Sucesso no reenvio */}
+            {resendSuccess && (
+              <div className="mb-4 px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center gap-3">
+                <MailCheck className="w-4 h-4 text-green-400 shrink-0" />
+                <p className="text-green-400 text-sm">E-mail de confirmação reenviado! Verifique sua caixa de entrada.</p>
+              </div>
+            )}
+
+            {/* Banner de erro genérico */}
+            {error && !isEmailNotVerified && (
               <div className="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm whitespace-pre-line">
                 {error}
               </div>
             )}
 
-            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
 
               <div>
-                <label className="block text-white/55 text-xs font-semibold uppercase tracking-wider mb-2">
-                  E-mail
-                </label>
+                <label className="block text-white/55 text-xs font-semibold uppercase tracking-wider mb-2">E-mail</label>
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
                   <input
@@ -140,15 +163,8 @@ export default function Login() {
 
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="block text-white/55 text-xs font-semibold uppercase tracking-wider">
-                    Senha
-                  </label>
-                  <Link
-                    to="/forgot-password"
-                    className="text-xs text-[#6FB68A] hover:text-[#D7B36A] transition-colors"
-                  >
-                    Esqueceu?
-                  </Link>
+                  <label className="block text-white/55 text-xs font-semibold uppercase tracking-wider">Senha</label>
+                  <Link to="/forgot-password" className="text-xs text-[#6FB68A] hover:text-[#D7B36A] transition-colors">Esqueceu?</Link>
                 </div>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
@@ -163,11 +179,8 @@ export default function Login() {
                     placeholder="••••••••"
                     required
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/50 transition-colors"
-                  >
+                  <button type="button" onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/50 transition-colors">
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
@@ -177,34 +190,23 @@ export default function Login() {
                 type="submit"
                 disabled={isLoading}
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm text-white transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
-                style={{
-                  background: 'linear-gradient(135deg, #315C4B, #1E6B4B)',
-                  boxShadow: '0 6px 24px rgba(49,92,75,0.40)',
-                }}
+                style={{ background: 'linear-gradient(135deg, #315C4B, #1E6B4B)', boxShadow: '0 6px 24px rgba(49,92,75,0.40)' }}
               >
-                {isLoading ? (
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    Entrar na plataforma
-                    <ArrowRight className="w-4 h-4" />
-                  </>
-                )}
+                {isLoading
+                  ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  : <><span>Entrar na plataforma</span><ArrowRight className="w-4 h-4" /></>
+                }
               </button>
 
             </form>
 
-            {/* Divider */}
             <div className="flex items-center gap-3 my-6">
               <div className="flex-1 h-px bg-white/[0.07]" />
               <span className="text-white/25 text-xs">ou</span>
               <div className="flex-1 h-px bg-white/[0.07]" />
             </div>
 
-            {/* Google */}
-            <button className="w-full flex items-center justify-center gap-3 rounded-xl border py-3 text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-all duration-300"
-              style={{ borderColor: 'rgba(255,255,255,0.09)' }}
-            >
+            <button className="w-full flex items-center justify-center gap-3 rounded-xl border py-3 text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-all duration-300" style={{ borderColor: 'rgba(255,255,255,0.09)' }}>
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                 <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -214,15 +216,9 @@ export default function Login() {
               Continuar com Google
             </button>
 
-            {/* Link cadastro */}
             <p className="text-center text-white/35 text-sm mt-8">
               Não tem uma conta?{' '}
-              <Link
-                to="/cadastro"
-                className="text-[#6FB68A] hover:text-[#D7B36A] font-semibold transition-colors"
-              >
-                Criar conta grátis
-              </Link>
+              <Link to="/cadastro" className="text-[#6FB68A] hover:text-[#D7B36A] font-semibold transition-colors">Criar conta grátis</Link>
             </p>
 
             <p className="text-center text-white/20 text-xs mt-4">
