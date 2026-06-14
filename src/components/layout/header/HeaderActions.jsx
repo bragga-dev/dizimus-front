@@ -3,7 +3,7 @@ import { UserCircle2, Bell } from "lucide-react";
 import DesktopUserDropdown from "./dropdowns/user/DesktopUserDropdown";
 import DesktopNotificationDropdown from "./dropdowns/notification/DesktopNotificationDropdown";
 
-export default function HeaderActions({ isAuthenticated }) {
+export default function HeaderActions({ isAuthenticated, user }) {
   const [userOpen, setUserOpen] = useState(false);
   const userRef = useRef(null);
 
@@ -34,7 +34,7 @@ export default function HeaderActions({ isAuthenticated }) {
           >
             <UserCircle2 size={30} className="text-white" />
           </button>
-          <DesktopUserDropdown open={userOpen} onClose={() => setUserOpen(false)} />
+          <DesktopUserDropdown open={userOpen} onClose={() => setUserOpen(false)} user={user} />
         </div>
       ) : (
         <a

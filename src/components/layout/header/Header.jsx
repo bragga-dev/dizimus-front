@@ -5,7 +5,7 @@ import HeaderLogo from "./HeaderLogo";
 import HeaderNav from "./HeaderNav";
 import HeaderSearch from "./HeaderSearch";
 import MobileMenu from "./MobileMenu";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
