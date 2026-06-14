@@ -1,55 +1,42 @@
 import { DollarSign, Users, Calendar, AlertCircle, CheckCircle2, Bell } from "lucide-react";
 
-// Tipos de notificação da plataforma eclesiástica
 export const NOTIFICATION_TYPES = {
-  TITHE: "tithe",
-  MEMBER: "member",
-  EVENT: "event",
-  ALERT: "alert",
+  TITHE:   "tithe",
+  MEMBER:  "member",
+  EVENT:   "event",
+  ALERT:   "alert",
   SUCCESS: "success",
-  SYSTEM: "system",
+  SYSTEM:  "system",
 };
 
+// Paleta adaptada ao fundo branco do dropdown (mesmo padrão do UserDropdown)
 export const notificationConfig = {
   [NOTIFICATION_TYPES.TITHE]: {
     icon: DollarSign,
-    color: "#FFD700",
-    bg: "rgba(255,215,0,0.12)",
-    border: "rgba(255,215,0,0.2)",
+    badgeClass: "bg-amber-50 text-amber-500",
   },
   [NOTIFICATION_TYPES.MEMBER]: {
     icon: Users,
-    color: "#9D7BFF",
-    bg: "rgba(157,123,255,0.12)",
-    border: "rgba(157,123,255,0.2)",
+    badgeClass: "bg-ecclesia-50 text-ecclesia-600",
   },
   [NOTIFICATION_TYPES.EVENT]: {
     icon: Calendar,
-    color: "#60a5fa",
-    bg: "rgba(96,165,250,0.12)",
-    border: "rgba(96,165,250,0.2)",
+    badgeClass: "bg-blue-50 text-blue-500",
   },
   [NOTIFICATION_TYPES.ALERT]: {
     icon: AlertCircle,
-    color: "#f87171",
-    bg: "rgba(248,113,113,0.12)",
-    border: "rgba(248,113,113,0.2)",
+    badgeClass: "bg-red-50 text-red-400",
   },
   [NOTIFICATION_TYPES.SUCCESS]: {
     icon: CheckCircle2,
-    color: "#4ade80",
-    bg: "rgba(74,222,128,0.12)",
-    border: "rgba(74,222,128,0.2)",
+    badgeClass: "bg-green-50 text-green-600",
   },
   [NOTIFICATION_TYPES.SYSTEM]: {
     icon: Bell,
-    color: "#c8c0e8",
-    bg: "rgba(200,192,232,0.10)",
-    border: "rgba(200,192,232,0.15)",
+    badgeClass: "bg-gray-100 text-gray-400",
   },
 };
 
-// Mock notifications — substitua por chamada de API real
 export const mockNotifications = [
   {
     id: 1,
@@ -98,12 +85,10 @@ export function getUnreadCount(notifications) {
 }
 
 export function groupNotificationsByDate(notifications) {
-  const today = notifications.filter((n) =>
-    ["Agora mesmo", "15 min atrás", "1h atrás", "3h atrás"].includes(n.time)
-  );
+  const today     = notifications.filter((n) => n.time !== "Ontem");
   const yesterday = notifications.filter((n) => n.time === "Ontem");
   const groups = [];
-  if (today.length) groups.push({ label: "Hoje", items: today });
-  if (yesterday.length) groups.push({ label: "Ontem", items: yesterday });
+  if (today.length)     groups.push({ label: "Hoje",   items: today });
+  if (yesterday.length) groups.push({ label: "Ontem",  items: yesterday });
   return groups;
 }
