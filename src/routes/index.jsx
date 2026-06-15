@@ -7,6 +7,7 @@ import RegisterChoice from '@/pages/Register/RegisterChoice'
 import RegisterChurch from '@/pages/Register/RegisterChurch'
 import RegisterMember from '@/pages/Register/RegisterMember'
 import EmailNotVerificado from '@/pages/EmailNotVerificado'
+import ForgotPassword from '@/pages/ForgotPassword'
 import Contact from '@/pages/Contact'
 import Pricing from '@/pages/Pricing'
 import About from '@/pages/About'
@@ -44,6 +45,7 @@ export default function AppRoutes() {
 
         {/* Página de aviso — email não verificado (pública, sem guard) */}
         <Route path="/verificar-email" element={<EmailNotVerificado />} />
+        <Route path="/resetar-senha" element={<ForgotPassword />} />
 
         {/* Rotas privadas */}
         {/* <Route path="/dashboard/*" element={<PrivateRoute><Dashboard /></PrivateRoute>} /> */}
