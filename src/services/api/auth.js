@@ -30,3 +30,14 @@ export async function requestPasswordReset(email) {
   const { data } = await api.post('/auth/password-reset/request', { email })
   return data
 }
+
+
+export async function confirmPasswordReset({ uid, token, new_password, new_password2 }) {
+  const { data } = await api.post('/auth/password-reset/confirm', { uid, token, new_password, new_password2 })
+  return data
+}
+
+export async function verifyEmail(uid, token) {
+  const { data } = await api.get(`/users/verify-email/${uid}/${token}`)
+  return data
+}
