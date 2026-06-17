@@ -21,11 +21,11 @@ export default function MobileUserDropdown({ onClose }) {
   return (
     <div className="fixed inset-0 z-50 bg-white flex flex-col overflow-y-auto">
 
-      {/* Cabeçalho — reutiliza o mesmo gradiente e estrutura */}
+      {/* Cabeçalho */}
       <DropdownHeader
         size="md"
         avatar={
-          <DropdownAvatar size="lg" className="rounded-[22px]">
+          <DropdownAvatar size="lg" className="rounded-[22px]" photoUrl={user?.photo_url} alt={user?.email}>
             <UserCircle2 size={32} className="text-white" />
           </DropdownAvatar>
         }
@@ -64,7 +64,6 @@ export default function MobileUserDropdown({ onClose }) {
                   variant="purple"
                   className="rounded-[22px] !bg-ecclesia-50/55"
                 />
-
                 <div className="flex-1">
                   <p className="font-navbar text-xl font-bold text-black group-hover:text-white">
                     {item.label}
@@ -75,7 +74,6 @@ export default function MobileUserDropdown({ onClose }) {
                     </p>
                   )}
                 </div>
-
                 <ChevronRight size={22} className="text-gray-300 group-hover:text-white" />
               </a>
             ))

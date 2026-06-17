@@ -26,13 +26,27 @@ export default function HeaderActions({ isAuthenticated, user }) {
             className="
               flex h-11 w-11
               items-center justify-center
-              rounded-xl
+              rounded-xl overflow-hidden
               transition-all duration-300
-              [&_svg]:transition-colors [&_svg]:duration-300
-              hover:bg-[#FFD700]/5 hover:[&_svg]:text-[#FFD700]
+              hover:ring-2 hover:ring-[#FFD700]/30
             "
           >
-            <UserCircle2 size={30} className="text-white" />
+            {user?.photo_url ? (
+              <img
+                src={user.photo_url}
+                alt={user.email}
+                className="h-full w-full object-cover rounded-xl"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                  e.currentTarget.nextSibling?.style.removeProperty("display");
+                }}
+              />
+            ) : null}
+            <UserCircle2
+              size={30}
+              className="text-white"
+              style={{ display: user?.photo_url ? "none" : undefined }}
+            />
           </button>
           <DesktopUserDropdown open={userOpen} onClose={() => setUserOpen(false)} user={user} />
         </div>
@@ -44,8 +58,7 @@ export default function HeaderActions({ isAuthenticated, user }) {
             items-center justify-center
             rounded-xl
             transition-all duration-300
-            [&_svg]:transition-colors [&_svg]:duration-300
-            hover:bg-[#FFD700]/5 hover:[&_svg]:text-[#FFD700]
+            hover:bg-[#FFD700]/5
           "
         >
           <UserCircle2 size={30} className="text-white" />

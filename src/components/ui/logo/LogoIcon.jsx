@@ -1,8 +1,7 @@
-// LogoIcon.jsx — Catedral dourada (baseado no SVG que você enviou)
 
-export default function LogoIcon() {
+export default function LogoIcon({ className = "w-[42px] h-[42px]" }) {
   return (
-    <div className="w-[42px] h-[42px] flex items-center justify-center">
+    <div className={`${className} flex items-center justify-center`}>
       <img
         src="/notre-dame-paris-svgrepo-com.svg"
         alt="Ecclesia Logo"

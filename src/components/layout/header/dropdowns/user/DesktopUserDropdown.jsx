@@ -24,7 +24,6 @@ export default function DesktopUserDropdown({ open, onClose, user }) {
     navigate("/login");
   };
 
-  // Achata todos os grupos em uma lista única para o desktop
   const allItems = userMenuItems.flatMap((g) => g.items);
 
   return (
@@ -35,12 +34,12 @@ export default function DesktopUserDropdown({ open, onClose, user }) {
         {/* Cabeçalho */}
         <DropdownHeader
           avatar={
-            <DropdownAvatar size="md">
+            <DropdownAvatar size="md" photoUrl={user?.photo_url} alt={user?.email}>
               <User size={20} className="text-white/80" />
             </DropdownAvatar>
           }
           title={user?.name ?? user?.email ?? "Minha Conta"}
-           subtitle={user?.member ??user?.church?? user?.role_label ?? ""}
+          subtitle={user?.member ?? user?.church ?? user?.role_label ?? ""}
         />
 
         {/* Itens de menu */}
