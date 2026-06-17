@@ -14,7 +14,6 @@ import EmailVerified from '@/pages/EmailVerified'
 
 // dentro de <Routes>:
 import Contact from '@/pages/Contact'
-import Pricing from '@/pages/Pricing'
 import About from '@/pages/About'
 import MainLayout from '@/components/layout/MainLayout'
 
@@ -38,7 +37,6 @@ export default function AppRoutes() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/contato" element={<Contact />} />
-          <Route path="/precos" element={<Pricing />} />
           <Route path="/sobre" element={<About />} />
         </Route>
 

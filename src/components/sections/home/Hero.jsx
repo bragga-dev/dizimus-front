@@ -35,7 +35,7 @@ export default function Hero() {
               className="text-xl font-semibold text-white/90 uppercase tracking-widest"
               style={{ fontFamily: 'var(--font-ecclesia)' }}
             >
-              Gestão para igrejas
+              Gestão inteligente para igrejas
             </span>
           </div>
 
@@ -47,7 +47,7 @@ export default function Hero() {
               textShadow: '0 2px 24px rgba(0,0,0,0.5)',
             }}
           >
-            Mais tempo para o ministério.{' '}
+            Menos burocracia.{' '}
             <span
               style={{
                 background: 'linear-gradient(90deg, #8b63ff, #e0a020)',
@@ -55,7 +55,7 @@ export default function Hero() {
                 WebkitTextFillColor: 'transparent',
               }}
             >
-              Menos tempo com operações.
+              Mais Ministério.
             </span>
           </h1>
 
@@ -64,8 +64,7 @@ export default function Hero() {
             className="text-base sm:text-lg text-white/75 max-w-xl mb-8 leading-relaxed"
             style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
           >
-            Membros, dízimos, eventos e comunicação — tudo em um só lugar.
-            Para você gastar energia onde ela realmente importa.
+            Membros, dízimos, ofertas, eventos e comunicação — tudo em um só lugar.
           </p>
 
 
