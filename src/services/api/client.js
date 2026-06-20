@@ -32,7 +32,7 @@ api.interceptors.response.use(
       {
         try 
         {
-          const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/auth/token/refresh`, { refresh })
+          const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/auth/refresh`, { refresh })
           localStorage.setItem('access_token', data.access)
           original.headers.Authorization = `Bearer ${data.access}`
           return api(original)
