@@ -61,8 +61,8 @@ export default function Hero() {
 
           {/* Subtítulo */}
           <p
-            className="text-base sm:text-lg text-white/75 max-w-xl mb-8 leading-relaxed"
-            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}
+             className="text-base sm:text-lg !text-white max-w-xl mb-8 leading-relaxed"
+  style={{ textShadow: '0 1px 8px rgba(230, 221, 221, 0.6)' }}
           >
             Membros, dízimos, ofertas, eventos e comunicação — tudo em um só lugar.
           </p>
