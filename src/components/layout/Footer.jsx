@@ -120,11 +120,10 @@ export default function Footer() {
                 className="text-sm italic leading-relaxed text-white/25"
                 style={{ fontFamily: "var(--font-navbar)" }}
               >
-                "E tudo que fizerdes, fazei-o de todo o coração,
-                como para o Senhor."
+                "Em verdade vos digo que tudo o que ligardes na terra será ligado no céu, e tudo o que desligardes na terra será desligado no céu."
               </p>
               <cite className="mt-2 block not-italic text-xs text-white/15">
-                — Colossenses 3:23
+                — Mateus 18:18
               </cite>
             </blockquote>
 
