@@ -1,8 +1,12 @@
-
 @import "tailwindcss";
 
+/* =========================
+   DESIGN TOKENS
+========================= */
+
 @theme {
-  --color-ecclesia-50:  #f3f0ff;
+  /* Ecclesia */
+  --color-ecclesia-50: #f3f0ff;
   --color-ecclesia-100: #e8e2ff;
   --color-ecclesia-200: #d1c6ff;
   --color-ecclesia-300: #b09aff;
@@ -14,45 +18,188 @@
   --color-ecclesia-900: #160b3c;
   --color-ecclesia-950: #0c0620;
 
+  /* Brand */
+  --color-brand-500: #673de6;
+  --color-brand-600: #5230c4;
+
+  /* Accent */
   --color-gold-400: #f5c842;
-  --color-gold-500: #e0a020;
-  --color-gold-600: #c88a10;
+
+  /* Typography */
   --font-ecclesia: "Cinzel", serif;
-  --font-navbar: "CormorantGaramond", serif;
+  --font-navbar: "Cormorant Garamond", serif;
+  --font-body: "Inter", sans-serif;
+
+  /* Layout */
+  --radius: 14px;
+
+  --content-padding: 2rem;
+  --section-gap: 2rem;
 }
 
-* {
-  margin: 0;
-  padding: 0;
+/* =========================
+   RESET BASE
+========================= */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: #FFFFFF;
-  color: #f0eeff;
-  overflow-x: hidden;
-  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  margin: 0;
+
+  background: #fff;
+  color: #171717;
+
+  font-family: var(--font-body);
+  line-height: 1.5;
+
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
+/* =========================
+   TIPOGRAFIA (mais controlada)
+========================= */
 
-button {
-  border: none;
-  outline: none;
-  cursor: pointer;
-  font-family: inherit;
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
 }
 
-img {
+h1 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p {
+  line-height: 1.6;
+  color: #FFFFFF;
+}
+
+/* =========================
+   ELEMENTOS BASE
+========================= */
+
+img,
+video,
+picture {
   max-width: 100%;
   display: block;
 }
 
-::selection {
-  background: rgba(103, 61, 230, 0.35);
+a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+/* =========================
+   FORM BASE (corrigido!)
+========================= */
+
+/* INPUT BASE MAIS LEVE */
+input,
+textarea,
+select {
+  font: inherit;
+
+  width: 100%;
+
+  min-height: 40px; /* antes 48px */
+  padding: 0.5rem 0.75rem;
+
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+
+  background: #fff;
+
+  transition: all 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-brand-500);
+  box-shadow: 0 0 0 3px rgb(103 61 230 / 15%);
+}
+
+/* =========================
+   BUTTON BASE (NOVO)
+========================= */
+
+button {
+  font: inherit;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+
+  line-height: 1;
+
+  border: none;
+  background: transparent;
+}
+
+/* opcional: botão primário padrão */
+button.primary {
+  background: var(--color-brand-500);
   color: white;
+}
+
+button.primary:hover {
+  background: var(--color-brand-600);
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+section {
+  margin-bottom: 0;
+}
+
+/* =========================
+   SELEÇÃO
+========================= */
+
+::selection {
+  background: rgb(103 61 230 / 20%);
+  color: #111;
+}
+
+.dropdown-text {
+  color: #111; /* preto padrão */
+}
+
+.dropdown-text:hover {
+  color: #FFFFFF; /* roxo no hover */
 }
