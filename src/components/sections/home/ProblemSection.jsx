@@ -1,122 +1,80 @@
-/**
- * ProblemSection — Premium Marketing Version
- */
+// src/components/sections/home/ProblemSection.jsx
 
 const pains = [
   {
-    before: "Finanças controladas em planilhas e anotações",
-    after: "Dízimos, ofertas e movimentações centralizados",
+    before: 'Finanças controladas em planilhas e anotações',
+    after:  'Dízimos, ofertas e movimentações centralizados',
   },
-
   {
-    before: "Cadastro de membros espalhado em vários lugares",
-    after: "Informações organizadas e sempre acessíveis",
+    before: 'Cadastro de membros espalhado em vários lugares',
+    after:  'Informações organizadas e sempre acessíveis',
   },
-
   {
-    before: "Eventos e comunicados no improviso",
-    after: "Agenda, confirmações e comunicação integrada",
+    before: 'Eventos e comunicados no improviso',
+    after:  'Agenda, confirmações e comunicação integrada',
   },
-
   {
-    before: "Horas preparando relatórios e acompanhamentos",
-    after: "Indicadores e relatórios disponíveis em segundos",
+    before: 'Horas preparando relatórios e acompanhamentos',
+    after:  'Indicadores e relatórios disponíveis em segundos',
   },
 ]
 
 export default function ProblemSection() {
   return (
     <section
-      className="
-        relative
-        overflow-hidden
-        px-6
-        py-28
-        lg:py-36
-        flex
-        items-center
-        justify-center
-      "
+      className="relative overflow-hidden px-6 py-28 lg:py-36"
       style={{
         background: `
-          radial-gradient(circle at top left, rgba(111,182,138,.14), transparent 35%),
-          radial-gradient(circle at right center, rgba(209,179,108,.10), transparent 40%),
-          linear-gradient(180deg, #0D1815 0%, #13221D 55%, #182922 100%)
+          radial-gradient(ellipse at 20% 50%, rgba(103,61,230,0.18) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 20%, rgba(224,160,32,0.10) 0%, transparent 45%),
+          linear-gradient(180deg, #0c0620 0%, #160b3c 60%, #0c0620 100%)
         `,
       }}
     >
-      {/* GRID decorativo */}
+      {/* Grid decorativo */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.04]"
         style={{
           backgroundImage: `
-            linear-gradient(rgba(255,255,255,.4) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,.4) 1px, transparent 1px)
+            linear-gradient(rgba(176,154,255,0.6) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(176,154,255,0.6) 1px, transparent 1px)
           `,
-          backgroundSize: "72px 72px",
+          backgroundSize: '72px 72px',
         }}
       />
 
-      {/* Glow esquerdo */}
+      {/* Glow roxo esquerdo */}
       <div
-        className="
-          absolute -left-56 top-0
-          h-[620px] w-[620px]
-          rounded-full blur-[200px]
-          opacity-[0.18]
-        "
-        style={{
-          background: "radial-gradient(circle,#67C38A,transparent 70%)",
-        }}
+        className="absolute -left-40 top-1/4 h-[500px] w-[500px] rounded-full blur-[180px] opacity-25"
+        style={{ background: 'radial-gradient(circle, #673de6, transparent 70%)' }}
       />
-
-      {/* Glow direito */}
+      {/* Glow dourado direito */}
       <div
-        className="
-          absolute -right-56 bottom-0
-          h-[650px] w-[650px]
-          rounded-full blur-[220px]
-          opacity-[0.12]
-        "
-        style={{
-          background: "radial-gradient(circle,#DAB870,transparent 70%)",
-        }}
+        className="absolute -right-40 bottom-0 h-[400px] w-[400px] rounded-full blur-[160px] opacity-15"
+        style={{ background: 'radial-gradient(circle, #e0a020, transparent 70%)' }}
       />
 
-      {/* Conteúdo centralizado */}
-      <div className="relative z-10 mx-auto max-w-6xl text-center">
-        
-        {/* HEADER */}
-        <div className="mx-auto mb-20 max-w-4xl">
+      <div className="relative z-10 mx-auto max-w-5xl">
+
+        {/* Header */}
+        <div className="mb-20 text-center">
           <span
-            className="
-              mb-7 inline-block
-              rounded-full border border-[#82D39E]/20
-              bg-[#82D39E]/10
-              px-5 py-2
-              text-xs font-semibold uppercase
-              tracking-[0.28em]
-              text-[#9BE8B5]
-            "
+            className="inline-block rounded-full border border-ecclesia-500/30 bg-ecclesia-500/10 px-5 py-2 text-[11px] font-bold uppercase tracking-[0.28em] text-ecclesia-300 mb-8"
           >
-            Crescimento sem perder organização
+            Por que igrejas escolhem o Ecclesia
           </span>
 
           <h2
-            className="
-              text-4xl sm:text-5xl lg:text-6xl
-              font-black leading-[1.1]
-              text-white
-            "
-            style={{ fontFamily: "var(--font-ecclesia)" }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] text-white"
+            style={{ fontFamily: 'var(--font-ecclesia)' }}
           >
             Sua missão é servir.
             <br />
             <span
               style={{
-                background: "linear-gradient(90deg,#86E6A7,#FFFFFF)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
+                background: 'linear-gradient(90deg, #8b63ff, #e0a020)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
               }}
             >
               A gestão precisa acompanhar.
@@ -124,58 +82,54 @@ export default function ProblemSection() {
           </h2>
 
           <p
-            className="
-              mt-8 max-w-3xl mx-auto
-              text-lg leading-relaxed
-              text-white/70
-            "
-            style={{ fontFamily: "var(--font-navbar)" }}
+            className="mt-6 max-w-2xl mx-auto text-lg leading-relaxed text-white/60"
+            style={{ fontFamily: 'var(--font-navbar)' }}
           >
-            Quando a igreja cresce, processos improvisados começam a consumir tempo, gerar retrabalho e reduzir a capacidade de acompanhar pessoas.
-            <span className="text-[#97E6B1]"> O Ecclesia organiza a operação para que o foco continue sendo o ministério.</span>
+            Quando a igreja cresce, processos improvisados consomem tempo e geram retrabalho.
+            O Ecclesia organiza a operação para que o foco continue sendo o ministério.
           </p>
         </div>
 
-        {/* COMPARAÇÃO */}
-        <div className="mx-auto max-w-5xl space-y-5">
+        {/* Cards de comparação */}
+        <div className="space-y-4">
           {pains.map(({ before, after }, i) => (
             <div
               key={i}
-              className="
-                group grid md:grid-cols-[1fr_100px_1fr]
-                gap-7 rounded-[30px]
-                border border-white/10
-                bg-white/[0.04]
-                px-7 py-8
-                backdrop-blur-xl
-                transition-all duration-500
-                hover:-translate-y-1
-                hover:border-[#7DD89D]/20
-                hover:bg-white/[0.06]
-              "
+              className="group grid md:grid-cols-[1fr_80px_1fr] gap-4 items-center rounded-2xl border border-white/10 bg-white/[0.04] px-6 py-6 backdrop-blur-sm transition-all duration-300 hover:border-ecclesia-500/30 hover:bg-ecclesia-500/5"
             >
-              <div className="flex items-center justify-center gap-4 text-center">
-                <div className="flex h-10 w-10 rounded-full items-center justify-center bg-white/5 text-white/40">—</div>
-                <span className="max-w-[280px] text-white/50">{before}</span>
+              {/* Antes */}
+              <div className="flex items-center gap-4">
+                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-white/5 border border-white/10">
+                  <span className="text-white/30 text-lg font-light">✕</span>
+                </div>
+                <span className="text-white/45 text-sm leading-relaxed">{before}</span>
               </div>
 
+              {/* Seta */}
               <div className="flex justify-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#86E6A7]/10 border border-[#86E6A7]/20 text-[#9BE8B5] text-xl transition group-hover:scale-110">→</div>
+                <div
+                  className="flex h-12 w-12 items-center justify-center rounded-full border border-ecclesia-500/30 bg-ecclesia-500/10 text-ecclesia-400 text-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-ecclesia-500/20"
+                >
+                  →
+                </div>
               </div>
 
-              <div className="flex items-center justify-center gap-4 text-center">
-                <div className="flex h-10 w-10 rounded-full items-center justify-center bg-[#86E6A7]/14 text-[#9BE8B5]">✓</div>
-                <span className="max-w-[300px] text-white/90 font-medium">{after}</span>
+              {/* Depois */}
+              <div className="flex items-center gap-4">
+                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gold-500/15 border border-gold-500/30">
+                  <span className="text-gold-400 text-sm">✓</span>
+                </div>
+                <span className="text-white/90 text-sm font-medium leading-relaxed">{after}</span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* FOOTER */}
-        <div className="mt-20">
-          <p className="text-lg text-white/60">
-            Mais organização.
-            <span className="text-[#9BE8B5]"> Menos operação.</span>
+        {/* Footer */}
+        <div className="mt-16 text-center">
+          <p className="text-white/40 text-base" style={{ fontFamily: 'var(--font-navbar)' }}>
+            Mais organização.{' '}
+            <span className="text-ecclesia-400">Menos operação.</span>
             <br />
             Mais tempo para cuidar de pessoas.
           </p>

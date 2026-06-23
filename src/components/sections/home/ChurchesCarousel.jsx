@@ -1,311 +1,142 @@
+// src/components/sections/home/ChurchesCarousel.jsx
+
 const MOCK_CHURCHES = [
-  { id: 1, full_name: "Igreja Esperança", avatar_url: null },
-  { id: 2, full_name: "Ministério Vida", avatar_url: null },
-  { id: 3, full_name: "Igreja Nova Aliança", avatar_url: null },
-  { id: 4, full_name: "Comunidade Graça", avatar_url: null },
-  { id: 5, full_name: "Igreja Recomeçar", avatar_url: null },
-  { id: 6, full_name: "Ministério Luz do Mundo", avatar_url: null },
-  { id: 7, full_name: "Igreja Boas Novas", avatar_url: null },
-  { id: 8, full_name: "Comunidade Shalom", avatar_url: null },
-  { id: 9, full_name: "Igreja Palavra Viva", avatar_url: null },
-  { id: 10, full_name: "Ministério Colheita", avatar_url: null },
+  { id: 1, full_name: 'Igreja Esperança' },
+  { id: 2, full_name: 'Ministério Vida' },
+  { id: 3, full_name: 'Igreja Nova Aliança' },
+  { id: 4, full_name: 'Comunidade Graça' },
+  { id: 5, full_name: 'Igreja Recomeçar' },
+  { id: 6, full_name: 'Ministério Luz do Mundo' },
+  { id: 7, full_name: 'Igreja Boas Novas' },
+  { id: 8, full_name: 'Comunidade Shalom' },
+  { id: 9, full_name: 'Igreja Palavra Viva' },
+  { id: 10, full_name: 'Ministério Colheita' },
 ]
 
-function getInitials(name = "") {
+function getInitials(name = '') {
   return name
-    .split(" ")
+    .split(' ')
     .filter(Boolean)
     .slice(0, 2)
     .map((w) => w[0].toUpperCase())
-    .join("")
+    .join('')
 }
 
-function ChurchCard({ full_name, avatar_url }) {
+// Alterna entre roxo e dourado para dar ritmo visual
+const ACCENT_CYCLE = [
+  { bg: 'rgba(103,61,230,0.18)', border: 'rgba(103,61,230,0.30)', text: '#b09aff', dot: '#8b63ff' },
+  { bg: 'rgba(224,160,32,0.14)', border: 'rgba(224,160,32,0.28)', text: '#f5c842', dot: '#e0a020' },
+  { bg: 'rgba(139,99,255,0.14)', border: 'rgba(139,99,255,0.25)', text: '#d1c6ff', dot: '#8b63ff' },
+  { bg: 'rgba(224,160,32,0.10)', border: 'rgba(245,200,66,0.22)', text: '#f5c842', dot: '#f5c842' },
+]
+
+function ChurchCard({ full_name, index }) {
+  const accent = ACCENT_CYCLE[index % ACCENT_CYCLE.length]
+
   return (
     <div
       className="
-        group
-
-        mx-3
-
-        flex
-        items-center
-        gap-4
-
-        rounded-2xl
-
-        border
-        border-white/[0.06]
-
-        bg-white/[0.04]
-
-        backdrop-blur-xl
-
-        px-7
-        py-5
-
-        transition-all
-        duration-500
-
-        hover:-translate-y-[2px]
-        hover:border-[#3E936D]/18
-        hover:bg-white/[0.06]
-
-        shrink-0
+        group mx-3 flex items-center gap-4
+        rounded-2xl border px-7 py-5
+        backdrop-blur-xl shrink-0
+        transition-all duration-300
+        hover:-translate-y-[2px] hover:brightness-110
       "
+      style={{
+        background: accent.bg,
+        borderColor: accent.border,
+      }}
     >
       {/* Avatar */}
-
       <div
-        className="
-          relative
-
-          h-12
-          w-12
-
-          overflow-hidden
-          rounded-full
-
-          border
-          border-[#4A9D77]/20
-
-          bg-gradient-to-br
-          from-[#163126]
-          to-[#0D1915]
-
-          shadow-[0_0_40px_rgba(62,147,109,.10)]
-
-          transition-all
-          duration-500
-
-          group-hover:scale-105
-        "
+        className="relative h-11 w-11 overflow-hidden rounded-full flex-shrink-0 flex items-center justify-center"
+        style={{
+          background: `linear-gradient(135deg, ${accent.dot}33, ${accent.dot}15)`,
+          border: `1px solid ${accent.border}`,
+        }}
       >
-        {avatar_url ? (
-          <img
-            src={avatar_url}
-            alt={full_name}
-            className="
-              h-full
-              w-full
-              object-cover
+        <span
+          className="text-xs font-bold"
+          style={{ color: accent.text }}
+        >
+          {getInitials(full_name)}
+        </span>
 
-              opacity-70
-              grayscale
-
-              transition-all
-              duration-500
-
-              group-hover:opacity-100
-              group-hover:grayscale-0
-            "
-          />
-        ) : (
-          <span
-            className="
-              absolute
-              inset-0
-
-              flex
-              items-center
-              justify-center
-
-              text-xs
-              font-black
-
-              text-[#D8C38D]
-
-              transition-all
-              duration-500
-
-              group-hover:text-white
-            "
-            style={{
-              fontFamily: "var(--font-ecclesia)",
-            }}
-          >
-            {getInitials(full_name)}
-          </span>
-        )}
-
-        {/* brilho */}
-
-        <div
-          className="
-            absolute
-            inset-0
-
-            bg-gradient-to-tr
-            from-transparent
-            via-white/[0.05]
-            to-transparent
-
-            opacity-0
-
-            transition
-
-            group-hover:opacity-100
-          "
-        />
+        {/* Brilho no hover */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
       </div>
 
       {/* Texto */}
-
       <div className="flex flex-col">
-
         <span
-          className="
-            text-[12px]
-
-            font-bold
-
-            uppercase
-
-            tracking-[0.18em]
-
-            text-white/82
-
-            transition
-
-            group-hover:text-white
-          "
-          style={{
-            fontFamily: "var(--font-ecclesia)",
-          }}
+          className="text-[12px] font-bold uppercase tracking-[0.18em]"
+          style={{ color: accent.text }}
         >
           {full_name}
         </span>
-
-        <span
-          className="
-            mt-1
-
-            text-[10px]
-
-            tracking-[0.14em]
-
-            text-[#82B79F]
-          "
-        >
-          usando Ecclesia
+        <span className="mt-0.5 text-[10px] tracking-[0.14em] text-white/30">
+          Ecclesia Network
         </span>
-
       </div>
 
-      {/* indicador */}
-
+      {/* Dot decorativo */}
       <div
-        className="
-          ml-2
-
-          h-2
-          w-2
-
-          rounded-full
-
-          bg-[#67C495]
-
-          shadow-[0_0_18px_rgba(103,196,149,.9)]
-        "
+        className="ml-2 h-1.5 w-1.5 rounded-full flex-shrink-0"
+        style={{ background: accent.dot, opacity: 0.6 }}
       />
-
     </div>
   )
 }
 
-export default function ChurchesCarousel({
-  churches = MOCK_CHURCHES,
-}) {
+export default function ChurchesCarousel({ churches = MOCK_CHURCHES }) {
   const track = [...churches, ...churches, ...churches]
 
   return (
     <section
-      className="
-        relative
-
-        overflow-hidden
-
-        border-y
-        border-white/[0.05]
-
-        bg-gradient-to-b
-        from-[#09130F]
-        via-[#0D1714]
-        to-[#11161B]
-
-        py-14
-      "
+      className="relative overflow-hidden border-y py-14"
+      style={{
+        background: 'linear-gradient(180deg, #0c0620 0%, #160b3c 50%, #0c0620 100%)',
+        borderColor: 'rgba(103,61,230,0.20)',
+      }}
     >
-
-      {/* brilho topo */}
-
+      {/* Glow roxo central */}
       <div
-        className="
-          absolute
-          left-1/2
-          top-0
-
-          h-[220px]
-          w-[700px]
-
-          -translate-x-1/2
-
-          rounded-full
-
-          bg-[#2A8A61]
-
-          opacity-[0.05]
-
-          blur-[140px]
-        "
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[180px] w-[600px] rounded-full blur-[120px] pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(103,61,230,0.25), transparent 70%)' }}
       />
 
-      {/* fades */}
+      {/* Fade esquerda */}
+      <div
+        className="absolute left-0 top-0 bottom-0 z-10 w-40 pointer-events-none"
+        style={{ background: 'linear-gradient(to right, #0c0620, transparent)' }}
+      />
+      {/* Fade direita */}
+      <div
+        className="absolute right-0 top-0 bottom-0 z-10 w-40 pointer-events-none"
+        style={{ background: 'linear-gradient(to left, #0c0620, transparent)' }}
+      />
 
-      <div className="absolute left-0 top-0 bottom-0 z-10 w-40 bg-gradient-to-r from-[#09130F]" />
-
-      <div className="absolute right-0 top-0 bottom-0 z-10 w-40 bg-gradient-to-l from-[#11161B]" />
-
-     
-      {/* trilho */}
-
+      {/* Marquee */}
       <div className="overflow-hidden">
-
         <div
           className="flex w-max items-center"
-          style={{
-            animation:
-              "churchesMarquee 52s linear infinite",
-          }}
+          style={{ animation: 'churchesMarquee 55s linear infinite' }}
         >
           {track.map((church, i) => (
-            <ChurchCard
-              key={`${church.id}-${i}`}
-              {...church}
-            />
+            <ChurchCard key={`${church.id}-${i}`} {...church} index={i} />
           ))}
         </div>
-
       </div>
 
       <style>{`
         @keyframes churchesMarquee {
-          from {
-            transform: translateX(0);
-          }
-
-          to {
-            transform: translateX(-33.333%);
-          }
+          from { transform: translateX(0); }
+          to   { transform: translateX(-33.333%); }
         }
-
         @media (prefers-reduced-motion: reduce) {
-          [style*="churchesMarquee"] {
-            animation: none;
-          }
+          [style*="churchesMarquee"] { animation: none; }
         }
       `}</style>
-
     </section>
   )
 }
