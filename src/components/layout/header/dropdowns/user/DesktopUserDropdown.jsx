@@ -73,23 +73,25 @@ export default function DesktopUserDropdown({ open, onClose, user }) {
             </DropdownMenuItem>
           ))}
 
-          {/* Rodapé — logout */}
+          {/* Separador */}
+          <div className="border-t border-gray-200 my-2" />
 
-          <DropdownMenuItem
-            variant="danger"
-            asButton
-            onClick={handleLogout}
-            className="group"
-          >
-            <DropdownIconBadge icon={logoutItem.icon} variant="red" size="md" />
-            <div className="flex-1 min-w-0">
-              <p className="font-navbar dropdown-text font-semibold text-red-500 text-sm leading-tight group-hover:text-red-600">
+          <DropdownMenuItem asButton onClick={handleLogout} className="group">
+            <DropdownIconBadge
+              className="group hover:bg-purple-50"
+              icon={logoutItem.icon}
+              variant="purple"
+              size="md"
+            />
+
+            <div className="flex-1 min-w-0 flex items-center">
+              <p className="dropdown-text font-navbar font-semibold text-sm leading-tight">
                 Sair da conta
               </p>
             </div>
             <ChevronRight
               size={14}
-              className="text-red-400 group-hover:text-red-600 transition-colors"
+              className="text-gray-300 group-hover:text-black transition-colors"
             />
           </DropdownMenuItem>
         </div>
