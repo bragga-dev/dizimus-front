@@ -44,9 +44,9 @@ export default function DesktopNotificationDropdown() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label="Notificações"
-        className="relative flex h-12 w-12 items-center justify-center rounded-2xl transition-all hover:bg-[#FFD700]/5 group"
+        className="relative flex h-12 w-12 items-center justify-center rounded-2xl transition-all group dropdown-hover"
       >
-        <Bell size={26} className="text-white group-hover:text-[#FFD700]" />
+        <Bell size={26} className="text-white group-hover:text-white" />
 
         {unread > 0 && (
           <span className="absolute top-0 right-0 h-6 w-6 rounded-full flex items-center justify-center text-[11px] font-bold font-navbar text-white bg-gradient-to-br from-ecclesia-600 to-ecclesia-800">
@@ -59,7 +59,11 @@ export default function DesktopNotificationDropdown() {
         <>
           <DropdownOverlay onClose={() => setOpen(false)} />
 
-          <DropdownPanel width="lg" align="right" className="top-[calc(100%+14px)] rounded-3xl">
+          <DropdownPanel
+            width="lg"
+            align="right"
+            className="top-[calc(100%+14px)] rounded-3xl"
+          >
             {/* Cabeçalho */}
             <DropdownHeader
               avatar={<Bell size={18} className="text-white" />}
@@ -70,15 +74,15 @@ export default function DesktopNotificationDropdown() {
                   <button
                     onClick={handleMarkAllRead}
                     title="Marcar todas como lidas"
-                    className="rounded-xl px-3 py-2 text-white/70 hover:bg-white/10 transition"
+                    className="dropdown-hover rounded-xl px-3 py-2 transition"
                   >
-                    <CheckCheck size={16} />
+                    <CheckCheck size={16} className="text-white" />
                   </button>
                   <button
                     title="Configurações de notificações"
-                    className="rounded-xl p-2 text-white/70 hover:bg-white/10 transition"
+                    className="dropdown-hover rounded-xl p-2 transition"
                   >
-                    <Settings size={16} />
+                    <Settings size={16} className="text-white" />
                   </button>
                 </>
               }
@@ -108,7 +112,7 @@ export default function DesktopNotificationDropdown() {
             <DropdownFooter>
               <a
                 href="/notificacoes"
-                className="flex justify-center rounded-2xl py-4 font-navbar text-black hover:bg-ecclesia-600 hover:text-white transition-all"
+                className="dropdown-hover flex justify-center rounded-2xl py-4 font-navbar transition-all"
               >
                 Ver todas as notificações
               </a>

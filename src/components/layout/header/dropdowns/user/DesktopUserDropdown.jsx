@@ -1,4 +1,4 @@
-import { User, LogOut, ChevronRight } from "lucide-react";
+import { User, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { userMenuItems, logoutItem } from "./userMenuItems";
@@ -9,7 +9,6 @@ import {
   DropdownAvatar,
   DropdownIconBadge,
   DropdownMenuItem,
-  DropdownFooter,
 } from "../shared";
 
 export default function DesktopUserDropdown({ open, onClose, user }) {
@@ -53,7 +52,7 @@ export default function DesktopUserDropdown({ open, onClose, user }) {
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className="group"
+              className="group dropdown-hover transition-colors"
             >
               <DropdownIconBadge icon={item.icon} variant="purple" size="md" />
 
@@ -68,7 +67,7 @@ export default function DesktopUserDropdown({ open, onClose, user }) {
 
               <ChevronRight
                 size={14}
-                className="text-gray-300 group-hover:text-black transition-colors"
+                className="text-gray-300 transition-colors group-hover:text-white"
               />
             </DropdownMenuItem>
           ))}
@@ -76,9 +75,13 @@ export default function DesktopUserDropdown({ open, onClose, user }) {
           {/* Separador */}
           <div className="border-t border-gray-200 my-2" />
 
-          <DropdownMenuItem asButton onClick={handleLogout} className="group">
+          {/* Item de logout */}
+          <DropdownMenuItem
+            asButton
+            onClick={handleLogout}
+            className="group dropdown-hover transition-colors"
+          >
             <DropdownIconBadge
-              className="group hover:bg-purple-50"
               icon={logoutItem.icon}
               variant="purple"
               size="md"
@@ -89,9 +92,10 @@ export default function DesktopUserDropdown({ open, onClose, user }) {
                 Sair da conta
               </p>
             </div>
+
             <ChevronRight
               size={14}
-              className="text-gray-300 group-hover:text-black transition-colors"
+              className="text-gray-300 transition-colors group-hover:text-white"
             />
           </DropdownMenuItem>
         </div>

@@ -203,3 +203,11 @@ section {
 .dropdown-text:hover {
   color: #FFFFFF; /* roxo no hover */
 }
+/* Hover padrão para itens do dropdown */
+.dropdown-hover:hover {
+  background-color: var(--color-ecclesia-600) !important;
+}
+
+.dropdown-hover:hover .dropdown-text {
+  color: #fff !important;
+}
