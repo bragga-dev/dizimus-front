@@ -6,7 +6,7 @@ export default function Backdrop() {
   if (!isMobileOpen) return null
   return (
     <div
-      className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+      className="fixed inset-0 z-40 bg-[#0c0620]/80 backdrop-blur-sm lg:hidden"
       onClick={toggleMobileSidebar}
     />
   )
