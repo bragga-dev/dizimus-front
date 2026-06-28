@@ -794,26 +794,36 @@ export default function MemberHome() {
 
   // ── Handlers ───────────────────────────────────────────────────────────────
 
-  const handlePhotoUpdate = (updated) => {
-    // Atualiza o profile com a nova foto
-    if (updated?.photo_url) {
-      setProfile((prev) => ({ ...prev, photo_url: updated.photo_url }));
-      // Atualiza o AuthContext
-      if (user) {
-        const updatedUser = { ...user, photo_url: updated.photo_url };
-        // Se tiver um método para atualizar o contexto, use-o
-        // Caso contrário, recarregue a sessão
-        saveSession &&
-          saveSession({
-            access: localStorage.getItem("access_token"),
-            refresh: localStorage.getItem("refresh_token"),
-          });
+  const handlePhotoUpdate = async (updated) => {
+    try {
+      // Atualiza o profile com a nova foto
+      if (updated?.photo_url) {
+        setProfile((prev) => ({ ...prev, photo_url: updated.photo_url }));
+
+        // Atualiza o AuthContext
+        if (user) {
+          const updatedUser = { ...user, photo_url: updated.photo_url };
+          saveSession &&
+            saveSession({
+              access: localStorage.getItem("access_token"),
+              refresh: localStorage.getItem("refresh_token"),
+            });
+        }
+      }
+
+      setModal(null);
+      showToast("Foto atualizada com sucesso");
+      load();
+    } catch (error) {
+      // Erro específico
+      if (error.status === 429) {
+        showToast("Muitas tentativas. Aguarde alguns segundos.", "error");
+      } else {
+        showToast(error.message || "Erro ao enviar foto", "error");
       }
     }
-    setModal(null);
-    showToast("Foto atualizada com sucesso");
-    load();
   };
+
   const handleProfileSave = (updated) => {
     setProfile(updated);
     setModal(null);
@@ -830,10 +840,14 @@ export default function MemberHome() {
   const handleDeleteAddress = async (id) => {
     try {
       await deleteMemberAddress(id);
-      showToast("Endereço removido");
+      showToast("Endereço removido com sucesso");
       load();
-    } catch {
-      showToast("Erro ao remover endereço", "error");
+    } catch (error) {
+      if (error.status === 404) {
+        showToast("Endereço não encontrado", "error");
+      } else {
+        showToast(error.message || "Erro ao remover endereço", "error");
+      }
     }
   };
 
