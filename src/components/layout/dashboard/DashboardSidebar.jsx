@@ -2,7 +2,7 @@
 import { NavLink } from 'react-router-dom'
 import {
   Home, Wallet, Church, User, LayoutGrid, Users,
-  DollarSign, Calendar, BarChart2, ChevronLeft, PanelLeftClose, PanelLeftOpen,
+  DollarSign, Calendar, BarChart2, PanelLeftClose, PanelLeftOpen, X,
 } from 'lucide-react'
 import { useSidebar } from '@/context/SidebarContext'
 import { useAuth } from '@/hooks/useAuth'
@@ -13,17 +13,17 @@ import LogoIcon from '@/components/ui/logo/LogoIcon'
 
 const NAV_BY_ROLE = {
   [ROLES.MEMBER]: [
-    { label: 'Início',        path: '/dashboard/membro',                icon: Home,       end: true  },
+    { label: 'Início',        path: '/dashboard/membro',               icon: Home,       end: true  },
     { label: 'Contribuições', path: '/dashboard/membro/contribuicoes',  icon: Wallet,     end: false },
     { label: 'Minha Igreja',  path: '/dashboard/membro/minha-igreja',   icon: Church,     end: false },
     { label: 'Meu Perfil',    path: '/dashboard/perfil',                icon: User,       end: true  },
   ],
   [ROLES.CHURCH]: [
-    { label: 'Visão Geral',   path: '/dashboard/igreja',                 icon: LayoutGrid, end: true  },
+    { label: 'Visão Geral',   path: '/dashboard/igreja',                icon: LayoutGrid, end: true  },
     { label: 'Membros',       path: '/dashboard/igreja/membros',         icon: Users,      end: false },
     { label: 'Financeiro',    path: '/dashboard/igreja/financeiro',      icon: DollarSign, end: false },
     { label: 'Eventos',       path: '/dashboard/igreja/eventos',         icon: Calendar,   end: false },
-    { label: 'Meu Perfil',    path: '/dashboard/perfil',                 icon: User,       end: true  },
+    { label: 'Meu Perfil',    path: '/dashboard/perfil',                icon: User,       end: true  },
   ],
   [ROLES.ADMIN]: [
     { label: 'Painel',        path: '/dashboard/admin',                  icon: LayoutGrid, end: true  },
@@ -33,8 +33,10 @@ const NAV_BY_ROLE = {
   ],
 }
 
+const btnBase = 'flex items-center justify-center w-8 h-8 rounded-xl flex-shrink-0 text-white/40 hover:bg-white/10 transition-all duration-200'
+
 export default function DashboardSidebar() {
-  const { isExpanded, isHovered, isMobileOpen, setIsHovered, toggleSidebar } = useSidebar()
+  const { isExpanded, isHovered, isMobileOpen, setIsHovered, toggleSidebar, toggleMobileSidebar } = useSidebar()
   const { user } = useAuth()
   const navItems = NAV_BY_ROLE[user?.role] ?? []
   const isWide = isExpanded || isHovered || isMobileOpen
@@ -43,37 +45,41 @@ export default function DashboardSidebar() {
     <aside
       onMouseEnter={() => !isExpanded && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      style={{ width: isWide ? '280px' : '80px' }}
       className={[
-        // Base
         'fixed top-0 left-0 z-50 flex h-screen flex-col',
-        // Mesma cor de fundo do header do site
-        'bg-[#2E004F]',
-        // Borda direita com traço dourado suave — eco do divisor do footer
-        'border-r border-[#E0B14A]/10',
+        'bg-[#2E004F] border-r border-[#E0B14A]/10',
         'transition-all duration-300 ease-in-out',
-        // Mobile: esconde por padrão, abre quando isMobileOpen
         isMobileOpen ? 'translate-x-0' : '-translate-x-full',
         'lg:translate-x-0',
-        isWide ? 'w-[280px]' : 'w-[80px]',
       ].join(' ')}
     >
-      {/* ── Logo ──────────────────────────────────────────────────── */}
-      <div className="flex h-20 items-center justify-between px-4 border-b border-[#E0B14A]/10 flex-shrink-0">
-        <NavLink to="/" className="flex items-center gap-2 min-w-0">
-          {isWide ? <Logo /> : <LogoIcon className="w-7 h-7 mx-auto" />}
+      {/* ── Cabeçalho ─────────────────────────────────────────────── */}
+      <div className="flex h-20 items-center border-b border-[#E0B14A]/10 flex-shrink-0 px-3 gap-2">
+
+        <NavLink to="/" className="flex-1 flex items-center min-w-0 overflow-hidden">
+          {isWide
+            ? <div className="scale-90 origin-left"><Logo /></div>
+            : <LogoIcon className="w-7 h-7 mx-auto" />
+          }
         </NavLink>
 
-        {/* Botão recolher — só desktop */}
+        {/* Desktop: recolher/expandir */}
         <button
           onClick={toggleSidebar}
-          title={isExpanded ? 'Recolher menu' : 'Expandir menu'}
-          className={[
-            'hidden lg:flex items-center justify-center w-8 h-8 rounded-xl flex-shrink-0',
-            'text-white/40 hover:bg-white/10 hover:text-[#E0B14A]',
-            'transition-all duration-200',
-          ].join(' ')}
+          title={isExpanded ? 'Recolher' : 'Expandir'}
+          className={`hidden lg:flex ${btnBase} hover:text-[#E0B14A]`}
         >
           {isExpanded ? <PanelLeftClose size={16} /> : <PanelLeftOpen size={16} />}
+        </button>
+
+        {/* Mobile: fechar */}
+        <button
+          onClick={toggleMobileSidebar}
+          title="Fechar menu"
+          className={`lg:hidden ${btnBase} hover:text-white`}
+        >
+          <X size={18} />
         </button>
       </div>
 
@@ -88,14 +94,14 @@ export default function DashboardSidebar() {
         </ul>
       </nav>
 
-      {/* ── Footer — avatar ────────────────────────────────────────── */}
+      {/* ── Avatar do usuário ─────────────────────────────────────── */}
       {user && (
         <div className="border-t border-[#E0B14A]/10 p-3 flex-shrink-0">
-          <div className={['flex items-center gap-3', isWide ? '' : 'justify-center'].join(' ')}>
-            <div className={[
-              'flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl',
-              'bg-white/10 border border-[#E0B14A]/20 text-[#E0B14A] text-sm font-semibold',
-            ].join(' ')}>
+          <div
+            className="flex items-center gap-3"
+            style={{ justifyContent: isWide ? 'flex-start' : 'center' }}
+          >
+            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-white/10 border border-[#E0B14A]/20 text-[#E0B14A] text-sm font-semibold">
               {user.email?.[0]?.toUpperCase() ?? 'U'}
             </div>
             {isWide && (

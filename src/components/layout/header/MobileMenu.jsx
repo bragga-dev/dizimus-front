@@ -1,470 +1,415 @@
-import { createPortal } from "react-dom";
+// src/components/layout/header/MobileMenu.jsx
+// Bottom sheet unificado — nav + user + notificações em UMA tela, sem overlays aninhados
+import { createPortal } from 'react-dom'
+import { useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
-  Search,
-  UserCircle2,
-  Bell,
-  X,
-  ChevronRight,
-} from "lucide-react";
+  X, ChevronRight, Bell, CheckCheck,
+  UserCircle2, LogOut,
+} from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/hooks/useAuth'
+import { navLinks } from './constants'
+import { userMenuItems } from './dropdowns/user/userMenuItems'
+import {
+  mockNotifications,
+  getUnreadCount,
+  groupNotificationsByDate,
+  notificationConfig,
+} from './dropdowns/notification/notificationHelpers'
 
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+// ── Abas ──────────────────────────────────────────────────────────────────────
+const TABS = { NAV: 'nav', NOTIF: 'notif', USER: 'user' }
 
-import { navLinks } from "./constants";
+export default function MobileMenu({ isOpen, onClose, isAuthenticated }) {
+  const [tab, setTab] = useState(TABS.NAV)
+  const [notifications, setNotifications] = useState(mockNotifications)
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+  const unread = getUnreadCount(notifications)
+  const groups = groupNotificationsByDate(notifications)
 
-import MobileUserDropdown from "./dropdowns/user/MobileUserDropdown";
-import MobileNotificationDropdown from "./dropdowns/notification/MobileNotificationDropdown";
-
-export default function MobileMenu({
-  isOpen,
-  onClose,
-  isAuthenticated,
-}) {
-  const [userOpen, setUserOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
-
+  // Bloquear scroll do body quando aberto
   useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
+    document.body.style.overflow = isOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [isOpen])
 
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
+  // Resetar para aba nav ao fechar
+  useEffect(() => { if (!isOpen) setTab(TABS.NAV) }, [isOpen])
 
-  useEffect(() => {
-    if (!isOpen) {
-      setUserOpen(false);
-      setNotifOpen(false);
-    }
-  }, [isOpen]);
+  const handleMarkAllRead = () =>
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })))
 
-  return (
-    <>
-      {createPortal(
-        <AnimatePresence>
+  const handleRead = (id) =>
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n))
 
-          {isOpen && (
-            <>
+  const handleLogout = async () => {
+    onClose()
+    await logout()
+    navigate('/login')
+  }
 
-              {/* BACKDROP */}
-              <motion.div
+  return createPortal(
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            onClick={onClose}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+          />
+
+          {/* Drawer — sobe de baixo */}
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 260 }}
+            className="fixed bottom-0 left-0 right-0 z-50 lg:hidden flex flex-col"
+            style={{
+              maxHeight: '90vh',
+              background: '#fff',
+              borderRadius: '24px 24px 0 0',
+              overflow: 'hidden',
+            }}
+          >
+            {/* ── Header do sheet ───────────────────────────────────── */}
+            <div
+              className="flex items-center justify-between px-5 pt-5 pb-4 flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg, #271460 0%, #160b3c 100%)' }}
+            >
+              {/* Avatar / info do usuário */}
+              <div className="flex items-center gap-3">
+                <div
+                  className="flex items-center justify-center rounded-2xl"
+                  style={{ width: 48, height: 48, background: 'rgba(255,255,255,0.1)' }}
+                >
+                  {user?.photo_url
+                    ? <img src={user.photo_url} alt={user.email} className="w-full h-full object-cover rounded-2xl" />
+                    : <UserCircle2 size={26} color="#fff" />
+                  }
+                </div>
+                <div>
+                  <p style={{ fontFamily: 'var(--font-navbar)', fontSize: 16, fontWeight: 700, color: '#fff', lineHeight: 1.2 }}>
+                    {isAuthenticated ? (user?.name ?? user?.email ?? 'Minha conta') : 'Bem-vindo'}
+                  </p>
+                  {isAuthenticated && (
+                    <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>
+                      {user?.role_label ?? ''}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Fechar */}
+              <button
                 onClick={onClose}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="
-                  fixed inset-0 z-40
-                  bg-black/60
-                  backdrop-blur-md
-                  lg:hidden
-                "
-              />
-
-              {/* DRAWER */}
-              <motion.aside
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{
-                  type: "spring",
-                  damping: 32,
-                  stiffness: 280,
+                aria-label="Fechar menu"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  width: 40, height: 40, borderRadius: 12,
+                  background: 'rgba(255,255,255,0.08)',
+                  color: '#fff', transition: 'background 0.2s',
                 }}
-                className="
-                  fixed
-                  right-0
-                  top-0
-                  z-50
-
-                  h-screen
-                  w-full
-
-                  bg-white
-
-                  flex
-                  flex-col
-
-                  lg:hidden
-                "
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
               >
+                <X size={20} />
+              </button>
+            </div>
 
-                {/* HEADER */}
-                <div
-                  className="
-                    bg-gradient-to-br
-                    from-ecclesia-800
-                    to-ecclesia-900
-
-                    px-6
-                    pt-6
-                    pb-5
-
-                    flex
-                    items-center
-                    justify-between
-                  "
-                >
-
-                  <div className="flex items-center gap-5">
-
-                    {isAuthenticated ? (
-                      <button
-                        onClick={() => {
-                          setUserOpen(true);
-                          setNotifOpen(false);
-                        }}
-                        className="
-                          flex
-                          h-16
-                          w-16
-
-                          items-center
-                          justify-center
-
-                          rounded-[22px]
-
-                          bg-white/6
-
-                          transition-all
-
-                          hover:bg-white/10
-                        "
-                      >
-                        <UserCircle2
-                          size={32}
-                          className="text-white"
-                        />
-                      </button>
-                    ) : (
-                      <a
-                        href="/login"
-                        className="
-                          flex
-                          h-16
-                          w-16
-
-                          items-center
-                          justify-center
-
-                          rounded-[22px]
-
-                          bg-white/6
-                        "
-                      >
-                        <UserCircle2
-                          size={32}
-                          className="text-white"
-                        />
-                      </a>
-                    )}
-
-                    {isAuthenticated ? (
-                      <button
-                        onClick={() => {
-                          setNotifOpen(true);
-                          setUserOpen(false);
-                        }}
-                        className="
-                          flex
-                          h-16
-                          w-16
-
-                          items-center
-                          justify-center
-
-                          rounded-[22px]
-
-                          bg-white/6
-
-                          transition-all
-
-                          hover:bg-white/10
-                        "
-                      >
-                        <Bell
-                          size={30}
-                          className="text-white"
-                        />
-                      </button>
-                    ) : (
-                      <a
-                        href="/login"
-                        className="
-                          flex
-                          h-16
-                          w-16
-
-                          items-center
-                          justify-center
-
-                          rounded-[22px]
-
-                          bg-white/6
-                        "
-                      >
-                        <Bell
-                          size={30}
-                          className="text-white"
-                        />
-                      </a>
-                    )}
-
-                  </div>
-
-                  {/* FECHAR */}
+            {/* ── Abas (só se autenticado) ──────────────────────────── */}
+            {isAuthenticated && (
+              <div
+                className="flex border-b flex-shrink-0"
+                style={{ borderColor: '#f0f0f0' }}
+              >
+                {[
+                  { key: TABS.NAV,   label: 'Menu' },
+                  { key: TABS.NOTIF, label: 'Notificações', badge: unread > 0 ? unread : null },
+                  { key: TABS.USER,  label: 'Minha conta' },
+                ].map(({ key, label, badge }) => (
                   <button
-                    onClick={onClose}
-                    className="
-                      flex
-                      h-12
-                      w-[99px]
-
-                      items-center
-                      justify-center
-
-                      text-white
-
-                      transition-all
-
-                      hover:bg-white/8  
-                                      "
+                    key={key}
+                    onClick={() => setTab(key)}
+                    style={{
+                      flex: 1, paddingTop: 14, paddingBottom: 14,
+                      fontSize: 13, fontWeight: tab === key ? 600 : 400,
+                      color: tab === key ? '#3d2096' : '#888',
+                      borderBottom: tab === key ? '2px solid #3d2096' : '2px solid transparent',
+                      transition: 'all 0.2s',
+                      position: 'relative',
+                      background: 'none',
+                    }}
                   >
-                    <X
-                      size={28}
-                      strokeWidth={2}
-                    />
+                    {label}
+                    {badge && (
+                      <span style={{
+                        position: 'absolute', top: 8, right: '25%',
+                        background: '#673de6', color: '#fff',
+                        fontSize: 10, fontWeight: 700,
+                        borderRadius: '50%', width: 16, height: 16,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>
+                        {badge}
+                      </span>
+                    )}
                   </button>
+                ))}
+              </div>
+            )}
 
-                </div>
+            {/* ── Conteúdo scrollável ───────────────────────────────── */}
+            <div className="flex-1 overflow-y-auto" style={{ paddingBottom: 32 }}>
 
-                {/* SEARCH */}
-                <div
-                  className="
-                    px-5
-                    pt-3
-                    pb-6
-                  "
-                >
-
-                  <div
-                    className="
-                      flex
-                      items-center
-
-                      h-[86px]
-
-                      overflow-hidden
-
-                      rounded-[36px]
-
-                      border
-                      border-ecclesia-300
-
-                      bg-white
-                    "
-                  >
-
-                    <input
-                      type="text"
-                      placeholder="Buscar..."
-
-                      className="
-                        flex-1
-
-                        px-8
-
-                        font-navbar
-                        font-semibold
-
-                        text-lg
-
-                        text-[#23073A]
-
-                        outline-none
-                      "
-                    />
-
-                    <button
-                      className="
-                        flex
-
-                        w-[92px]
-
-                        self-stretch
-
-                        items-center
-                        justify-center
-
-                        text-ecclesia-500
-
-                        hover:bg-ecclesia-50
-                      "
-                    >
-                      <Search
-                        size={30}
-                        strokeWidth={2.1}
-                      />
-                    </button>
-
-                  </div>
-
-                </div>
-
-                {/* NAV */}
-                <div
-                  className="
-                    flex-1
-                    overflow-y-auto
-
-                    px-5
-                    pb-10
-                  "
-                >
-
-                  <div className="space-y-2">
-
-                    {navLinks.map((item, i) => {
-                      const Icon = item.icon;
-
-                      return (
-                        <motion.a
-                          key={item.href}
-                          href={item.href}
-                          onClick={onClose}
-                          initial={{
-                            opacity: 0,
-                            x: 25,
-                          }}
-                          animate={{
-                            opacity: 1,
-                            x: 0,
-                          }}
-                          transition={{
-                            delay: i * 0.05,
-                          }}
-                          className="
-                            group
-
-                            flex
-                            items-center
-
-                            gap-6
-
-                            rounded-[30px]
-
-                            px-4
-                            py-4
-
-                            transition-all
-
-                            hover:bg-ecclesia-600
-                          "
+              {/* ABA: Navegação */}
+              {(!isAuthenticated || tab === TABS.NAV) && (
+                <div style={{ padding: '16px 12px 0' }}>
+                  {navLinks.map((item, i) => {
+                    const Icon = item.icon
+                    return (
+                      <motion.a
+                        key={item.href}
+                        href={item.href}
+                        onClick={onClose}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.04 }}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 16,
+                          padding: '12px 14px', borderRadius: 16,
+                          transition: 'background 0.2s', marginBottom: 4,
+                          textDecoration: 'none',
+                        }}
+                        onMouseEnter={e => e.currentTarget.style.background = '#3d2096'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                        className="group"
+                      >
+                        <div style={{
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          width: 48, height: 48, borderRadius: 14,
+                          background: 'rgba(103,61,230,0.08)',
+                          color: '#5230c4', flexShrink: 0,
+                          transition: 'all 0.2s',
+                        }}
+                          className="group-hover:!bg-white/20 group-hover:!text-white"
                         >
+                          <Icon size={22} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <p style={{
+                            fontFamily: 'var(--font-navbar)', fontSize: 17, fontWeight: 700,
+                            color: '#1a1a2e', transition: 'color 0.2s',
+                          }}
+                            className="group-hover:!text-white"
+                          >{item.label}</p>
+                          {item.description && (
+                            <p style={{ fontSize: 13, color: '#888', marginTop: 2 }}
+                              className="group-hover:!text-white/70"
+                            >{item.description}</p>
+                          )}
+                        </div>
+                        <ChevronRight size={18} color="#ccc" className="group-hover:!text-white" />
+                      </motion.a>
+                    )
+                  })}
 
-                          <div
-                            className="
-                              flex
-
-                              h-16
-                              w-16
-
-                              shrink-0
-
-                              items-center
-                              justify-center
-
-                              rounded-[22px]
-
-                              bg-ecclesia-50/55
-
-                              text-ecclesia-600
-
-                              transition-all
-
-                              group-hover:bg-white/10
-                              group-hover:text-white
-                            "
-                          >
-                            <Icon size={30} />
-                          </div>
-
-                          <div className="flex-1">
-
-                            <p
-                              className="
-                                font-navbar
-
-                                text-xl
-                                font-bold
-
-                                text-black
-
-                                group-hover:text-white
-                              "
-                            >
-                              {item.label}
-                            </p>
-
-                            {item.description && (
-                              <p
-                                className="
-                                  mt-1
-
-                                  text-base
-
-                                  text-gray-500
-
-                                  group-hover:text-white/80
-                                "
-                              >
-                                {item.description}
-                              </p>
-                            )}
-
-                          </div>
-
-                          <ChevronRight
-                            size={22}
-                            className="
-                              text-gray-300
-
-                              group-hover:text-white
-                            "
-                          />
-
-                        </motion.a>
-                      );
-                    })}
-
-                  </div>
-
+                  {/* Login / cadastro se não autenticado */}
+                  {!isAuthenticated && (
+                    <div style={{ marginTop: 24, display: 'flex', flexDirection: 'column', gap: 10, padding: '0 2px' }}>
+                      <a href="/login" onClick={onClose} style={{
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        height: 52, borderRadius: 16, fontSize: 16, fontWeight: 600,
+                        background: 'linear-gradient(135deg, #673de6, #3d2096)',
+                        color: '#fff', textDecoration: 'none',
+                      }}>Entrar</a>
+                      <a href="/cadastro" onClick={onClose} style={{
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        height: 52, borderRadius: 16, fontSize: 16, fontWeight: 600,
+                        border: '1.5px solid #d1c6ff', color: '#3d2096', textDecoration: 'none',
+                      }}>Criar conta</a>
+                    </div>
+                  )}
                 </div>
+              )}
 
-              </motion.aside>
+              {/* ABA: Notificações */}
+              {isAuthenticated && tab === TABS.NOTIF && (
+                <div>
+                  {unread > 0 && (
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '12px 16px 4px' }}>
+                      <button
+                        onClick={handleMarkAllRead}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 6,
+                          fontSize: 13, color: '#5230c4', fontWeight: 500,
+                          background: 'none', padding: '4px 8px', borderRadius: 8,
+                        }}
+                      >
+                        <CheckCheck size={15} />
+                        Marcar todas como lidas
+                      </button>
+                    </div>
+                  )}
 
-            </>
-          )}
+                  {groups.length === 0 ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '48px 24px' }}>
+                      <div style={{
+                        width: 64, height: 64, borderRadius: 20,
+                        background: 'rgba(103,61,230,0.08)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        color: '#5230c4', marginBottom: 16,
+                      }}>
+                        <Bell size={28} />
+                      </div>
+                      <p style={{ fontSize: 16, fontWeight: 600, color: '#1a1a2e' }}>Tudo em dia</p>
+                      <p style={{ fontSize: 13, color: '#888', marginTop: 6 }}>Nenhuma notificação pendente.</p>
+                    </div>
+                  ) : groups.map(group => (
+                    <div key={group.label} style={{ padding: '12px 12px 0' }}>
+                      <p style={{ fontSize: 11, fontWeight: 700, color: '#5230c4', letterSpacing: '0.1em', textTransform: 'uppercase', padding: '0 4px 8px' }}>
+                        {group.label}
+                      </p>
+                      {group.items.map(n => {
+                        const cfg = notificationConfig[n.type]
+                        const Icon = cfg.icon
+                        return (
+                          <button
+                            key={n.id}
+                            onClick={() => handleRead(n.id)}
+                            style={{
+                              display: 'flex', width: '100%', alignItems: 'center',
+                              gap: 14, padding: '12px 14px', borderRadius: 14,
+                              marginBottom: 4, textAlign: 'left',
+                              background: n.read ? 'transparent' : 'rgba(103,61,230,0.05)',
+                              transition: 'background 0.2s',
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.background = '#3d2096'}
+                            onMouseLeave={e => e.currentTarget.style.background = n.read ? 'transparent' : 'rgba(103,61,230,0.05)'}
+                            className="group"
+                          >
+                            <div style={{
+                              width: 44, height: 44, borderRadius: 12, flexShrink: 0,
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              transition: 'all 0.2s',
+                            }} className={`${cfg.badgeClass} group-hover:!bg-white/20 group-hover:!text-white`}>
+                              <Icon size={18} />
+                            </div>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                                <p style={{ fontSize: 14, fontWeight: n.read ? 400 : 600, color: n.read ? '#888' : '#1a1a2e', lineHeight: 1.3 }}
+                                  className="group-hover:!text-white truncate"
+                                >{n.title}</p>
+                                <span style={{ fontSize: 11, color: '#bbb', flexShrink: 0 }}
+                                  className="group-hover:!text-white/60"
+                                >{n.time}</span>
+                              </div>
+                              <p style={{ fontSize: 12, color: '#888', marginTop: 3, lineHeight: 1.4 }}
+                                className="group-hover:!text-white/75"
+                              >{n.message}</p>
+                            </div>
+                            {!n.read && (
+                              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#673de6', flexShrink: 0 }}
+                                className="group-hover:!bg-white"
+                              />
+                            )}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  ))}
 
-        </AnimatePresence>,
-        document.body
+                  <div style={{ padding: '16px 12px 0' }}>
+                    <a href="/notificacoes" onClick={onClose} style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                      height: 50, borderRadius: 16, fontSize: 14, fontWeight: 600,
+                      color: '#3d2096', background: 'rgba(103,61,230,0.07)',
+                      textDecoration: 'none',
+                    }}>
+                      Ver todas as notificações <ChevronRight size={16} />
+                    </a>
+                  </div>
+                </div>
+              )}
+
+              {/* ABA: Minha conta */}
+              {isAuthenticated && tab === TABS.USER && (
+                <div style={{ padding: '16px 12px 0' }}>
+                  {userMenuItems.flatMap(g => g.items).map(item => {
+                    const Icon = item.icon
+                    return (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        onClick={onClose}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 16,
+                          padding: '12px 14px', borderRadius: 16,
+                          textDecoration: 'none', marginBottom: 4, transition: 'background 0.2s',
+                        }}
+                        onMouseEnter={e => e.currentTarget.style.background = '#3d2096'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                        className="group"
+                      >
+                        <div style={{
+                          width: 48, height: 48, borderRadius: 14, flexShrink: 0,
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          background: 'rgba(103,61,230,0.08)', color: '#5230c4', transition: 'all 0.2s',
+                        }} className="group-hover:!bg-white/20 group-hover:!text-white">
+                          <Icon size={22} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <p style={{ fontFamily: 'var(--font-navbar)', fontSize: 16, fontWeight: 700, color: '#1a1a2e' }}
+                            className="group-hover:!text-white"
+                          >{item.label}</p>
+                          {item.description && (
+                            <p style={{ fontSize: 13, color: '#888', marginTop: 2 }}
+                              className="group-hover:!text-white/70"
+                            >{item.description}</p>
+                          )}
+                        </div>
+                        <ChevronRight size={18} color="#ccc" className="group-hover:!text-white" />
+                      </a>
+                    )
+                  })}
+
+                  {/* Separador + Logout */}
+                  <div style={{ height: 1, background: '#f0f0f0', margin: '12px 4px' }} />
+                  <button
+                    onClick={handleLogout}
+                    style={{
+                      display: 'flex', width: '100%', alignItems: 'center', gap: 16,
+                      padding: '12px 14px', borderRadius: 16,
+                      background: 'transparent', transition: 'background 0.2s',
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#ef4444'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    className="group"
+                  >
+                    <div style={{
+                      width: 48, height: 48, borderRadius: 14, flexShrink: 0,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      background: 'rgba(239,68,68,0.08)', color: '#ef4444', transition: 'all 0.2s',
+                    }} className="group-hover:!bg-white/20 group-hover:!text-white">
+                      <LogOut size={22} />
+                    </div>
+                    <p style={{ fontFamily: 'var(--font-navbar)', fontSize: 16, fontWeight: 700, color: '#ef4444' }}
+                      className="group-hover:!text-white"
+                    >Sair da conta</p>
+                  </button>
+                </div>
+              )}
+
+            </div>
+          </motion.div>
+        </>
       )}
-
-      {userOpen &&
-        createPortal(
-          <MobileUserDropdown
-            isAuthenticated={isAuthenticated}
-            onClose={() => setUserOpen(false)}
-          />,
-          document.body
-        )}
-
-      {notifOpen &&
-        createPortal(
-          <MobileNotificationDropdown
-            onClose={() => setNotifOpen(false)}
-          />,
-          document.body
-        )}
-    </>
-  );
+    </AnimatePresence>,
+    document.body
+  )
 }
