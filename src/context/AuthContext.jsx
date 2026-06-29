@@ -10,15 +10,10 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const token = localStorage.getItem('access_token')
-    if (!token) {
-      setLoading(false)
-      return
-    }
-    // Busca o perfil real do usuário via /users/me usando o token salvo
+    if (!token) { setLoading(false); return }
     getMe()
       .then(setUser)
       .catch(() => {
-        // Token inválido ou expirado — limpa sessão
         localStorage.removeItem('access_token')
         localStorage.removeItem('refresh_token')
       })
@@ -27,8 +22,7 @@ export function AuthProvider({ children }) {
 
   /**
    * Chamado após login ou registro bem-sucedido.
-   * O endpoint /auth/login retorna { access, refresh } sem objeto user,
-   * então buscamos o perfil completo logo em seguida via /users/me.
+   * Busca o perfil completo via /users/me e salva no estado.
    */
   const saveSession = useCallback(async ({ access, refresh }) => {
     localStorage.setItem('access_token', access)
@@ -37,19 +31,25 @@ export function AuthProvider({ children }) {
       const userData = await getMe()
       setUser(userData)
     } catch {
-      // Se /users/me falhar, pelo menos os tokens estão salvos
-      // e o usuário não perde a sessão
       setUser({ email: null })
     }
+  }, [])
+
+  /**
+   * Atualiza campos do usuário no estado sem re-buscar a API.
+   * Útil para aplicar mudanças de foto, nome etc. imediatamente.
+   * Ex: updateUser({ photo_url: newUrl })
+   */
+  const updateUser = useCallback((patch) => {
+    setUser((prev) => prev ? { ...prev, ...patch } : prev)
   }, [])
 
   const logout = useCallback(async () => {
     const refresh = localStorage.getItem('refresh_token')
     try {
       if (refresh) await logoutService(refresh)
-    } catch {
-      // silencia erro de rede no logout
-    } finally {
+    } catch { /* silencia */ }
+    finally {
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
       setUser(null)
@@ -57,7 +57,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, loading, saveSession, logout }}>
+    <AuthContext.Provider value={{ user, loading, saveSession, updateUser, logout }}>
       {children}
     </AuthContext.Provider>
   )
