@@ -67,8 +67,8 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* =========================
-   TIPOGRAFIA (mais controlada)
+//* =========================
+   TIPOGRAFIA (corrigida)
 ========================= */
 
 h1, h2, h3, h4, h5, h6 {
@@ -78,23 +78,74 @@ h1, h2, h3, h4, h5, h6 {
   color: #FFFFFF;
 }
 
-h1 {
-  font-size: clamp(2rem, 4vw, 3.5rem);
-}
-
-h2 {
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-}
-
-h3 {
-  font-size: 1.25rem;
-}
-
+/* Não force cor em parágrafos globais */
 p {
   line-height: 1.6;
-  color: #FFFFFF;
+  /* remove color: #FFFFFF; */
 }
 
+/* Não force cor em links globais */
+a {
+  text-decoration: none;
+  /* remove color: #FFFFFF; */
+}
+
+/* =========================
+   FORM BASE (corrigido!)
+========================= */
+
+input,
+textarea,
+select {
+  font: inherit;
+  width: 100%;
+  min-height: 40px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #1a1a1a; /* ← ADICIONADO: texto escuro */
+  transition: all 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-brand-500);
+  box-shadow: 0 0 0 3px rgb(103 61 230 / 15%);
+}
+
+/* Placeholders escuros */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* Labels com cor escura */
+label {
+  color: #374151;
+}
+
+/* =========================
+   DROPDOWN - CORRIGIDO
+========================= */
+
+.dropdown-text {
+  color: #1a1a1a; /* preto padrão */
+}
+
+.dropdown-text:hover {
+  color: #FFFFFF; /* branco no hover */
+}
+
+.dropdown-hover:hover {
+  background-color: var(--color-ecclesia-600) !important;
+}
+
+.dropdown-hover:hover .dropdown-text {
+  color: #fff !important;
+}
 /* =========================
    ELEMENTOS BASE
 ========================= */
@@ -115,36 +166,6 @@ ul, ol {
   list-style: none;
 }
 
-/* =========================
-   FORM BASE (corrigido!)
-========================= */
-
-/* INPUT BASE MAIS LEVE */
-input,
-textarea,
-select {
-  font: inherit;
-
-  width: 100%;
-
-  min-height: 40px; /* antes 48px */
-  padding: 0.5rem 0.75rem;
-
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-
-  background: #fff;
-
-  transition: all 0.2s ease;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: var(--color-brand-500);
-  box-shadow: 0 0 0 3px rgb(103 61 230 / 15%);
-}
 
 /* =========================
    BUTTON BASE (NOVO)
